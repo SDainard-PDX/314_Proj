@@ -1,0 +1,7 @@
+[core]
+	repositoryformatversion = 0
+	filemode = true
+	bare = true
+[remote "master"]
+	url = https://github.com/GrateDain/314_Project.git
+	fetch = +refs/heads/*:refs/remotes/master/*

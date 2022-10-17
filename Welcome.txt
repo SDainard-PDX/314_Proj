@@ -1,0 +1,17 @@
+Hello & Welcome;
+
+I'm glad you're here, I recomment setting up remote repository in your ~ dir by:
+
+< instructins here>
+
+!! VERY IMPORTANT !!
+DO NOT MERGE TO MASTER WITH OUT MERGE MANAGER APPROVAL.
+If you REEAAALLYYY need to see how a merge would affect the larger project then 
+-> commit or stash your branch
+-> make a new branch FROM MASTER called "<x> merge test" or simular
+-> test your merge there.  
+In fact I generally recommend doing it that way in general and making notes on conflict resolutions.
+Then after seeing that they work. Bomb it out and repeat in Master.
+
+
+Have a great day.

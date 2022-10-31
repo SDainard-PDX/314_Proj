@@ -49,6 +49,7 @@ int main()
         name = firstName[rand() % 7] + " " + lastName[rand() % 7];
         address = to_string(rand() % 1000) + " " + stNames[rand() % 8] + " " + stAbrv[rand() % 4];
         city = cityOpt[rand() % 8];
+        state = stateOpt[rand() % 3];
         zip = rand() % 10000; //creates a random digit number
         if (MP == 'M') { memstat = MemberStat[rand() % 3]; }
 

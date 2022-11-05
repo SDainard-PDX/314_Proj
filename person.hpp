@@ -30,6 +30,7 @@ class Person
         void display() const;
 
         int getNumber() const;
+        std::string getStatus() const;
 
     //Quick number and type compare w/ == operator overload
         bool operator == (int x) const; // number

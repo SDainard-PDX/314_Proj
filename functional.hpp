@@ -2,8 +2,6 @@
 
 #include <iostream>
 #include <limits>
-#include <cstring>
-#include <time.h>
 #include <string>
 
 /*
@@ -31,5 +29,4 @@ bool YorN();
 //validation
 bool allNum(std::string);
 bool allLet(std::string);
-bool rightSize(int, int min, int max);
 bool rightSize(std::string, int min, int max);

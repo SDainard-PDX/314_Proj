@@ -12,7 +12,7 @@
 class PeopleNode
 {
     PeopleNode();
-    PeopleNode(Person *toAdd);
+    explicit PeopleNode(Person *toAdd);
     ~PeopleNode();
 
     Person      *person; //the data
@@ -26,7 +26,7 @@ class People
     public:
         People();
         ~People();
-        int populate(std::string file_in, char type_in);
+        int populate(const std::string& file_in, char type_in);
         bool add_person(Person *to_add);
         Person * find_person(int num_to_find);
         //bool remove_person(int num_to_remove);

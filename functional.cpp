@@ -85,16 +85,9 @@ bool allLet(std::string x)
     return true;
 }
 
-bool rightSize(int x, int min, int max)
-{
-    x = (int)(sizeof(x)/sizeof(int));
-    if (x > min && x < max) { return true;}
-    return false;
-}
-
 bool rightSize(string x, int min, int max)
 {
-    if( (int)(x.length()) > min && (int)(x.length()) < max) { return true;}
+    if( (int)(x.length()) >= min && (int)(x.length()) <= max) { return true;}
     return false;
 }
 

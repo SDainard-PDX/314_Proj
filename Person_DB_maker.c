@@ -17,7 +17,7 @@ int main()
     //Variables
     string name = "", address = "", city = "", state = "", memstat = "";
     int  x=0, number = 0, zip = 0;
-    char MP = 'P';
+    char MPM;
 
     string firstName[7] = {"Samuel", "Nevada", "Trae", "Ken", "Matt", "Poly", "Nihar"};
     string lastName[7] = {"Koppolu", "Duyck", "Kuleshova", "Williams", "Tyrell", "Dainard", "Newman"};
@@ -35,8 +35,8 @@ int main()
     //Build a BD for testing
     cout << "Please enter number of entries you want: ";
     cin >> x;
-    cout << "\nMembers [M] or Providers [P]? ";
-    cin >> MP;
+    cout << "Member = M, Provider = P, Managers = C, which: ";
+    cin >> MPM;
     cout << "\n ... please wait, building test data ... " << endl;
 
     //create and open out file
@@ -51,17 +51,14 @@ int main()
         city = cityOpt[rand() % 8];
         state = stateOpt[rand() % 3];
         zip = rand() % 10000; //creates a random digit number
-        if (MP == 'M') { memstat = MemberStat[rand() % 3]; }
+        if( MPM == 'M' ) { memstat = MemberStat[rand() % 3];}
+        else { memstat = "Valid";}
 
-        cout << number << "," << name << "," << address << "," 
-                    << city << "," << state << "," << zip; 
-        if(MP == 'M') { cout << "," << memstat; }
-        cout <<  endl;
+        cout << number << "," << name << "," << address << "," << city
+                << "," << state << "," << zip << "," << memstat <<  endl;
         
-        output_file << number << "," << name << "," << address << "," 
-                    << city << "," << state << "," << zip; 
-        if(MP == 'M') { output_file << "," << memstat; }
-        output_file <<  endl;
+        output_file << number << "," << name << "," << address << "," << city
+            << "," << state << "," << zip << "," << memstat <<  endl;
     }
 
     output_file.close();

@@ -16,4 +16,7 @@
 bool VerifyPerson(People *pool, int number);
 
 //Managers Menu
-void Menu2(People *manDS, People *proDS, People *memDS);
+int Menu2(People *manDS, People *proDS, People *memDS);
+
+//Providers Menu
+int Menu3(People *manDS, People *proDS, People *memDS);

@@ -28,7 +28,7 @@ Then after seeing that they work. Bomb it out and repeat in Master.
 
 
 To Begin:
-Create a new branch using 'git branch -b <name of new branch>'
+Create a new branch using 'git checkout -b <name of new branch>'
 For the branch name I recomend the feature or area you're working on IE "memberDS"
 You've now created and SWITCHED into a new branch. Yay!
 You can't switch branches with out stashing or commiting, use -h for more branch info.

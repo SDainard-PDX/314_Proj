@@ -23,7 +23,7 @@ People::~People()
     head = nullptr;
 }
 
-int People::populate(string file_in, char type_in)
+int People::populate(const string& file_in, char type_in)
 {
     //open the indicated file or return
     ifstream in_file(file_in);
@@ -36,7 +36,7 @@ int People::populate(string file_in, char type_in)
     string  cityIn = {0};
     string  stateIn = {0};
     string  zIn = {0};
-    string  statusIn = "Valid";
+    string  statusIn = {0};
     int count = 0;  //temp variable to return items input
 
     //loop over input until EOF
@@ -50,6 +50,7 @@ int People::populate(string file_in, char type_in)
         getline(in_file, stateIn, ',');
         getline(in_file, zIn, ',');
         int zipIn = stoi(zIn);
+        getline(in_file, statusIn);
         //create person to add
         Person *toAdd = new Person(numberIn, nameIn, addressIn, cityIn, stateIn, zipIn, statusIn, type_in);
 
@@ -76,7 +77,7 @@ bool People::add_person(Person *toAdd)
         }
         if (!curr->next) { curr->next = newPerson;}
         else {
-            prev->next = newPerson;
+            if(prev) prev->next = newPerson;
             newPerson->next = curr;
         }
     }

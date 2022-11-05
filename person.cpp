@@ -1,5 +1,7 @@
 #include "person.hpp"
 
+#include <utility>
+
 using namespace std;
 
 //<person>
@@ -10,8 +12,8 @@ Person::~Person() {}
 
 Person::Person(int numberIn, string nameIn, string addressIn, string cityIn,
                string stateIn, int zipIn, string statusIn, char typeIn):
-                number(numberIn), name(nameIn), address(addressIn),city(cityIn),
-                state(stateIn), zip(zipIn), status(statusIn), type(typeIn) {}
+                number(numberIn), name(std::move(nameIn)), address(std::move(addressIn)),city(std::move(cityIn)),
+                state(std::move(stateIn)), zip(zipIn), status(std::move(statusIn)), type(typeIn) {}
 
 bool Person::create(char type_code){
     errstruc ERS;
@@ -21,7 +23,7 @@ bool Person::create(char type_code){
         cout << "Please enter the id number of the person: ";
         cin >> number;
         Safety();
-        if(!rightSize(number, 9, 9)) throw 'I';
+        if(!rightSize(to_string(number), 9, 9)) throw 'I';
 
         cout << "Please enter the name of the person(max 25 char): ";
         getline(cin,name);
@@ -44,7 +46,7 @@ bool Person::create(char type_code){
         cout << "Please enter the zip code of the person: ";
         cin >> zip;
         Safety();
-        if(!rightSize(zip, 5, 5)) throw 'Z';
+        if(!rightSize(to_string(zip), 5, 5)) throw 'Z';
 
         type = type_code;
     }
@@ -85,10 +87,8 @@ void Person::display() const
 }
 
 
-int Person::getNumber() const
-{
-    return number;
-}
+int Person::getNumber() const { return number; }
+string Person::getStatus() const { return status; }
 
 
 bool Person::operator == (int x) const

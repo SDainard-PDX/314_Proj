@@ -26,8 +26,16 @@ If you REEAAALLYYY need to see how a merge would affect the larger project then
 In fact I generally recommend doing it that way in general and making notes on conflict resolutions.
 Then after seeing that they work. Bomb it out and repeat in Master.
 
-Have a great day.
 
+To Begin:
+Create a new branch using 'git branch -b <name of new branch>'
+For the branch name I recomend the feature or area you're working on IE "memberDS"
+You've now created and SWITCHED into a new branch. Yay!
+You can't switch branches with out stashing or commiting, use -h for more branch info.
+
+
+
+Have a great day.
 
 
 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 (in case the other one gets messed up)touc

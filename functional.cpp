@@ -1,4 +1,4 @@
-#include "functional.h"
+#include "functional.hpp"
 
 using namespace std;
 
@@ -23,26 +23,16 @@ void Wait4Enter()
     cout << "\nPress Enter to continue..."; while (cin.get()!='\n');
 }
 
-bool charr_cp(char * & dest, const char * source)
-{
-    if(!source) return false;
-    if(dest) { delete[] dest;}
-    dest = new char[strlen(source) + 1];
-    strcpy(dest, source);
-
-    return true;
-}
-
 int Choice(int low, int high)
 {
     char c[20];
-    int ci = low - 1;
+    int ci;
 
     try
     {
-    cin.getline(c,20);
-    ci = atoi(c);
-    if(ci < low || ci > high) throw c;
+        cin.getline(c,20);
+        ci = atoi(c);
+        if(ci < (low) || ci > high) throw c;
     }
 
     catch(char * c)
@@ -58,13 +48,12 @@ int Choice(int low, int high)
 bool YorN()
 {
     string c;
-    char ci{0};
-
+    char ci;
     try
     {
-    getline(cin, c);
-    ci = toupper(c[0]);
-    if(ci != 'Y' && ci != 'N') throw c;
+        getline(cin, c);
+        ci = toupper(c[0]);
+        if(ci != 'Y' && ci != 'N') throw c;
     }
 
     catch(string c)
@@ -74,6 +63,38 @@ bool YorN()
     }
 
     if(ci == 'Y') return true;
+    return false;
+}
+
+//*************** validation **************
+bool allNum(std::string x)
+{
+    for(uint i = 0; i < x.length(); i++)
+    {
+        if(!isdigit(x[i])) return false;
+    }
+    return true;
+}
+
+bool allLet(std::string x)
+{
+    for(uint i = 0; i < x.length(); i++)
+    {
+        if(!isalpha(x[i])) return false;
+    }
+    return true;
+}
+
+bool rightSize(int x, int min, int max)
+{
+    x = (int)(sizeof(x)/sizeof(int));
+    if (x > min && x < max) { return true;}
+    return false;
+}
+
+bool rightSize(string x, int min, int max)
+{
+    if( (int)(x.length()) > min && (int)(x.length()) < max) { return true;}
     return false;
 }
 

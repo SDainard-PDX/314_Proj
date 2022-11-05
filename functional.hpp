@@ -22,12 +22,14 @@ void Safety();
 //Pauses program until user or client presses enter, discards any input
 void Wait4Enter();
 
-//Copies an array of char from source to dest with various common error guards
-bool charr_cp(char * & dest, const char * source);
-
 //returns the number of a choice, forces a choice between low - high inclusive
 int Choice(int low, int high);
 
 //returns true for y and false for no, forces valid input
 bool YorN();
 
+//validation
+bool allNum(std::string);
+bool allLet(std::string);
+bool rightSize(int, int min, int max);
+bool rightSize(std::string, int min, int max);

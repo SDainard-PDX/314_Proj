@@ -16,12 +16,12 @@ class Person
         Person();
         ~Person();
         Person(
-            int numberIn,
+            std::string numberIn,
             std::string nameIn,
             std::string addressIn,
             std::string cityIn,
             std::string stateIn,
-            int zipIn,
+            std::string zipIn,
             std::string statusIn,
             char typeIn
         );
@@ -29,21 +29,26 @@ class Person
         bool edit();
         void display() const;
 
-        int getNumber() const;
+        std::string getNumber() const;
+        std::string getName() const;
+        std::string getAddress() const;
+        std::string getCity() const;
+        std::string getState() const;
+        std::string getZip() const;
         std::string getStatus() const;
 
     //Quick number and type compare w/ == operator overload
-        bool operator == (int x) const; // number
+        bool operator == (std::string x) const; // number
         bool operator == (char x) const;//type
 
     protected:
     //data members
-        int         number;     //9 digit primary key
-    std::string      name;       //first and last
-    std::string      address;
-    std::string      city;
-    std::string      state;
-        int         zip;
+    std::string     number;     //9 digit primary key
+    std::string     name;       //first and last
+    std::string     address;
+    std::string     city;
+    std::string     state;
+    std::string     zip;
     std::string     status;
         char        type;
 };

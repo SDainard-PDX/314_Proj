@@ -1,22 +1,27 @@
 #include "functional.hpp"
 #include "error.hpp"
-#include "person.hpp"
+//#include "person.hpp"
 #include "people.hpp"
+//#include "service_item.hpp"
+#include "service_directory.hpp"
 
 #include <string>
 #include <algorithm>
 #include <iostream>
 #include <vector>
 
-#define MANAGERS_IN "managers.csv"
-#define PROVIDERS_IN "providers.csv"
-#define MEMBERS_IN "members.csv"
+#define MANAGERS_FILE "managers.csv"
+#define PROVIDERS_FILE "providers.csv"
+#define MEMBERS_FILE "members.csv"
+#define SERVICE_DIR_FILE "service_directory.csv"
 
 //Menu Function Declarations
-bool VerifyPerson(People *pool, int number);
+bool VerifyPerson(People *pool, std::string &number);
 
 //Managers Menu
-int Menu2(People *manDS, People *proDS, People *memDS);
+int
+Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS);
 
 //Providers Menu
-int Menu3(People *manDS, People *proDS, People *memDS);
+int
+Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS);

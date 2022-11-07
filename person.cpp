@@ -5,13 +5,13 @@
 using namespace std;
 
 //<person>
-Person::Person(): number(-1), name("none"), address("blank"),city("blank"),
-    state("XX"), zip(-1), status("Valid"), type('x') {}
+Person::Person(): number("-1"), name("none"), address("blank"),city("blank"),
+    state("XX"), zip("-1"), status("Valid"), type('x') {}
 
 Person::~Person() {}
 
-Person::Person(int numberIn, string nameIn, string addressIn, string cityIn,
-               string stateIn, int zipIn, string statusIn, char typeIn):
+Person::Person(string numberIn, string nameIn, string addressIn, string cityIn,
+               string stateIn, string zipIn, string statusIn, char typeIn):
                 number(numberIn), name(std::move(nameIn)), address(std::move(addressIn)),city(std::move(cityIn)),
                 state(std::move(stateIn)), zip(zipIn), status(std::move(statusIn)), type(typeIn) {}
 
@@ -21,9 +21,8 @@ bool Person::create(char type_code){
     try
     {
         cout << "Please enter the id number of the person: ";
-        cin >> number;
-        Safety();
-        if(!rightSize(to_string(number), 9, 9)) throw 'I';
+        getline(cin,number);
+        if(!rightSize(number, 9, 9)) throw 'I';
 
         cout << "Please enter the name of the person(max 25 char): ";
         getline(cin,name);
@@ -44,9 +43,8 @@ bool Person::create(char type_code){
         if(!rightSize(state, 1, 2)) throw 'S';
 
         cout << "Please enter the zip code of the person: ";
-        cin >> zip;
-        Safety();
-        if(!rightSize(to_string(zip), 5, 5)) throw 'Z';
+        getline(cin,zip);
+        if(!rightSize(zip, 5, 5)) throw 'Z';
 
         type = type_code;
     }
@@ -87,11 +85,16 @@ void Person::display() const
 }
 
 
-int Person::getNumber() const { return number; }
+string Person::getNumber() const { return number; }
+string Person::getName() const { return name; }
+string Person::getAddress() const { return address; }
+string Person::getCity() const { return city; }
+string Person::getState() const { return state; }
+string Person::getZip() const { return zip; }
 string Person::getStatus() const { return status; }
 
 
-bool Person::operator == (int x) const
+bool Person::operator == (string x) const
 {
     if(this->number == x) return true;
 

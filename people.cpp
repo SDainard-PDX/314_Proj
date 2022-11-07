@@ -9,6 +9,7 @@ PeopleNode::PeopleNode(Person *toAdd):person(toAdd), next(nullptr) {}
 PeopleNode::~PeopleNode()
 {
     delete person;
+    person = nullptr;
     next = nullptr;
     delete next;
 }
@@ -18,9 +19,12 @@ People::People(): head(nullptr) {}
 
 People::~People()
 {
-    //todo if(head) { del_People(head); }
-    delete head;
-    head = nullptr;
+    PeopleNode *del;
+    while(head) {
+        del = head;
+        head = head->next;
+        delete del;
+    }
 }
 
 int People::populate(const string& file_in, char type_in)
@@ -35,7 +39,7 @@ int People::populate(const string& file_in, char type_in)
     string  addressIn = {0};
     string  cityIn = {0};
     string  stateIn = {0};
-    string  zIn = {0};
+    string  zipIn = {0};
     string  statusIn = {0};
     int count = 0;  //temp variable to return items input
 
@@ -43,16 +47,14 @@ int People::populate(const string& file_in, char type_in)
     while(getline(in_file, numIn, ','))
     {
         //get temp values from file
-        int numberIn = stoi(numIn);
         getline(in_file, nameIn, ',');
         getline(in_file, addressIn, ',');
         getline(in_file, cityIn, ',');
         getline(in_file, stateIn, ',');
-        getline(in_file, zIn, ',');
-        int zipIn = stoi(zIn);
+        getline(in_file, zipIn, ',');
         getline(in_file, statusIn);
         //create person to add
-        Person *toAdd = new Person(numberIn, nameIn, addressIn, cityIn, stateIn, zipIn, statusIn, type_in);
+        Person *toAdd = new Person(numIn, nameIn, addressIn, cityIn, stateIn, zipIn, statusIn, type_in);
 
         //add the vehicle to the table & increment count
         add_person(toAdd);
@@ -82,18 +84,55 @@ bool People::add_person(Person *toAdd)
         }
     }
     return true;
-};
+}
 
-Person * People::find_person(int match)
+bool People::remove_person(string remove)
+{
+    PeopleNode *curr = head, *prev = nullptr, *del = nullptr;
+
+    if (!head) { return false; }
+    else {
+        while (curr) {
+            if (curr->person->getNumber() == remove) {
+                del = curr;
+                if (curr == head) { head = curr->next; }
+                else { prev->next = curr->next; }
+                delete del;
+            }
+            prev = curr;
+            curr = curr->next;
+        }
+    }
+    return true;
+}
+
+Person * People::find_person(string match)
 {
     if(!head) return nullptr;
+    PeopleNode *curr = head;
     Person *result = nullptr;
 
-    while (head && !result) {
-        if(head->person->getNumber() == match) result = head->person;
-        head = head->next;
+    while (curr && !result) {
+        if(curr->person->getNumber() == match) result = curr->person;
+        curr = curr->next;
     }
     return result;
 }
 
-bool People::write_out(string file_out) { return true;}
+bool People::write_out(string file_out)
+{
+    ofstream output_file(file_out);
+    if(!output_file.is_open()) return false;
+
+    PeopleNode *curr = head;
+    while(curr) {
+        Person *temp = curr->person;
+        output_file << temp->getNumber() << "," << temp->getName() << "," << temp->getAddress()
+            << "," << temp->getCity() << "," << temp->getState() << "," << temp->getZip() << ","
+            << temp->getStatus() << endl;
+        curr = curr->next;
+    }
+
+    output_file.close();
+    return true;
+}

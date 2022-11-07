@@ -11,11 +11,16 @@ int main()
     People *memDS = new People();
     People *proDS = new People();
     People *manDS = new People();
-    memDS->populate(MEMBERS_IN, 'm');
-    proDS->populate(PROVIDERS_IN,'p');
-    manDS->populate(MANAGERS_IN,'c');
+    memDS->populate(MEMBERS_FILE, 'm');
+    proDS->populate(PROVIDERS_FILE, 'p');
+    manDS->populate(MANAGERS_FILE, 'c');
+    Service_Directory *servDS = new Service_Directory();
+    servDS->populate(SERVICE_DIR_FILE);
+
 //Initial Menu Selection and log-in
-    int menu_choice, entry_number;
+    int menu_choice;
+    string entry_number;
+
     do      //Menu for making selections from cmd line
     {
         ClearScreen();
@@ -35,25 +40,23 @@ int main()
         {
             case 1: //manager terminal
                 cout << "\nEnter your manager id number: ";
-                cin >> entry_number;
-                Safety();
-                if (rightSize(to_string(entry_number), 9, 9)) {
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(manDS, entry_number)) {
-                        menu_choice = Menu2(manDS, proDS, memDS);
+                        menu_choice = Menu2(manDS, proDS, memDS, servDS);
                     }//goto menu 2
                     else { cout << "No match returning to main menu." << endl;}
                 }
                 break;
             case 2: //providers terminal
                 cout << "\nEnter your provider id number: ";
-                cin >> entry_number;
-                Safety();
-                if (rightSize(to_string(entry_number), 9, 9)) {
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(proDS, entry_number)) {
-                        menu_choice = Menu3(manDS, proDS, memDS);
+                        menu_choice = Menu3(manDS, proDS, memDS, servDS);
                     }//goto menu 3
+                    else cout << "No match returning to main menu." << endl;
                 }
-                else cout << "No match returning to main menu." << endl;
                 break;
             case 0: cout << "\t\tGood-bye!" << endl;
                 break;
@@ -64,13 +67,21 @@ int main()
     } while (menu_choice != 0);
     Divider();
 
-    //TODO Clean up and closing items to exit program
+    //Clean up and closing items to exit program
+    manDS->write_out(MANAGERS_FILE);
+    proDS->write_out(PROVIDERS_FILE);
+    memDS->write_out(MEMBERS_FILE);
+    delete manDS;
+    delete proDS;
+    delete memDS;
+    servDS->write_out(SERVICE_DIR_FILE);
+    delete servDS;
 
     return 1; // SUCCESS
 }
 
 //Managers Menu
-int Menu2(People *manDS, People *proDS, People *memDS)
+int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
 {
     int menu_choice;
     do      //Menu for making selections from cmd line
@@ -110,9 +121,11 @@ int Menu2(People *manDS, People *proDS, People *memDS)
 }
 
 //Providers Menu
-int Menu3(People *manDS, People *proDS, People *memDS)
+int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
 {
-    int menu_choice, entry_number;
+    int menu_choice;
+    string entry;
+
     do      //Menu for making selections from cmd line
     {
         ClearScreen();
@@ -134,16 +147,21 @@ int Menu3(People *manDS, People *proDS, People *memDS)
         {
             case 1:
                 cout << "\nEnter the member id number: ";
-                cin >> entry_number;
-                Safety();
-                if (rightSize(to_string(entry_number), 9, 9)) {
-                    if (VerifyPerson(memDS, entry_number)) {
-                        cout << "\tMember status is: Valid";
+                getline(cin, entry);
+                if (rightSize(entry, 9, 9)) {
+                    if (VerifyPerson(memDS, entry)) {
+                        cout << "\tMember status is: " + entry;
                     }
+                    else cout << "No match returning to main menu." << endl;
                 }
-                else cout << "No match returning to main menu." << endl;
                 break;
             case 2: cout << "\t\tSubmit selected" << endl;
+                break;
+            case 3:
+                cout << "Please enter the email to send to: ";
+                getline(cin, entry);
+                servDS->write_out(entry);
+                cout << "\n\nCurrent Service Directory sent to " + entry << endl;
                 break;
             case 4: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
@@ -159,13 +177,14 @@ int Menu3(People *manDS, People *proDS, People *memDS)
     return menu_choice;
 }
 
-bool VerifyPerson(People *pool, int number)
+bool VerifyPerson(People *pool, string &number)
 {
     Person *result = pool->find_person(number);
     if (result) {
-        if (result->getStatus() == "Valid" ) {
+        number = result->getStatus();
+        //if (number == "Valid" ) {
             return true;
-        }
+        //}
     }
     return false;
 }

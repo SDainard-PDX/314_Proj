@@ -16,11 +16,11 @@ bool Service_Item::create(){
     {
         cout << "Please enter the id number of the Service Item: ";
         getline(cin,number);
-        if(!rightSize(number, 9, 9)) throw 'I';
+        if(!rightSize(number, 6, 6)) throw 'I';
 
         cout << "Please enter the name of the Service Item(max 25 char): ";
         getline(cin,name);
-        if(!rightSize(name, 1, 25)) throw 'N';
+        if(!rightSize(name, 1, 20)) throw 'N';
 
         cout << "Please enter the fee paid for the Service_Item(max $999.99): $";
         cin >> fee;
@@ -29,8 +29,8 @@ bool Service_Item::create(){
         if(fee > 999.99) { throw 'H'; }
     }
     catch (char E) {
-        if (E == 'I')  ERS.gen("Id number isn't 9 digits.");
-        if (E == 'N')  ERS.genIntMax("Name", 25);
+        if (E == 'I')  ERS.gen("Id number isn't 6 digits.");
+        if (E == 'N')  ERS.genIntMax("Name", 20);
         if (E == 'L')  ERS.gen("Fee must be non-negative.");
         if (E == 'H')  ERS.gen("Fee must be less than $1000.");
 

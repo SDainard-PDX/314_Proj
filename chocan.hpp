@@ -1,8 +1,8 @@
 #include "functional.hpp"
 #include "error.hpp"
-//#include "person.hpp"
+#include "person.hpp"
 #include "people.hpp"
-//#include "service_item.hpp"
+#include "service_item.hpp"
 #include "service_directory.hpp"
 
 #include <string>
@@ -16,7 +16,7 @@
 #define SERVICE_DIR_FILE "service_directory.csv"
 
 //Menu Function Declarations
-bool VerifyPerson(People *pool, std::string &number);
+bool VerifyPerson(People *pool, std::string number, std::string &reply);
 
 //Managers Menu
 int

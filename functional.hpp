@@ -23,6 +23,9 @@ void Wait4Enter();
 //returns the number of a choice, forces a choice between low - high inclusive
 int Choice(int low, int high);
 
+//returns true if found in options and false if not, forces valid input
+char Choice(std::string options);
+
 //returns true for y and false for no, forces valid input
 bool YorN();
 

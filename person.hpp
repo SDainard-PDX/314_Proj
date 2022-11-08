@@ -25,7 +25,7 @@ class Person
             std::string statusIn,
             char typeIn
         );
-        bool create(char type_code);
+        Person * create(char type_in);
         bool edit();
         void display() const;
 

@@ -15,8 +15,9 @@ Person::Person(string numberIn, string nameIn, string addressIn, string cityIn,
                 number(numberIn), name(std::move(nameIn)), address(std::move(addressIn)),city(std::move(cityIn)),
                 state(std::move(stateIn)), zip(zipIn), status(std::move(statusIn)), type(typeIn) {}
 
-bool Person::create(char type_code){
+Person * Person::create(char type_code){
     errstruc ERS;
+    Person *newPerson;
 
     try
     {
@@ -27,8 +28,6 @@ bool Person::create(char type_code){
         cout << "Please enter the name of the person(max 25 char): ";
         getline(cin,name);
         if(!rightSize(name, 1, 25)) throw 'N';
-
-        if(type_code == 'c') return true; //ChocAn Manager, no other info needed
 
         cout << "Please enter the address of the person(max 25 char): ";
         getline(cin,address);
@@ -47,6 +46,8 @@ bool Person::create(char type_code){
         if(!rightSize(zip, 5, 5)) throw 'Z';
 
         type = type_code;
+
+        newPerson = new Person(number, name, address, city, state, zip, "Valid", type);
     }
     catch (char E) {
         if (E == 'I')  ERS.gen("Id number isn't 9 digits.");
@@ -56,9 +57,9 @@ bool Person::create(char type_code){
         if (E == 'S')  ERS.genIntMax("State", 2);
         if (E == 'Z')  ERS.gen("Zip code isn't 5 digits.");
 
-        return false;
+        return nullptr;
     }
-    return true;
+    return newPerson;
 }
 
 bool Person::edit()

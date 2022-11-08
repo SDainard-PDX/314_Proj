@@ -19,7 +19,7 @@ int main()
 
 //Initial Menu Selection and log-in
     int menu_choice;
-    string entry_number;
+    string entry_number, reply;
 
     do      //Menu for making selections from cmd line
     {
@@ -42,7 +42,7 @@ int main()
                 cout << "\nEnter your manager id number: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
-                    if (VerifyPerson(manDS, entry_number)) {
+                    if (VerifyPerson(manDS, entry_number, reply)) {
                         menu_choice = Menu2(manDS, proDS, memDS, servDS);
                     }//goto menu 2
                     else { cout << "No match returning to main menu." << endl;}
@@ -52,7 +52,7 @@ int main()
                 cout << "\nEnter your provider id number: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
-                    if (VerifyPerson(proDS, entry_number)) {
+                    if (VerifyPerson(proDS, entry_number, reply)) {
                         menu_choice = Menu3(manDS, proDS, memDS, servDS);
                     }//goto menu 3
                     else cout << "No match returning to main menu." << endl;
@@ -84,29 +84,122 @@ int main()
 int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
 {
     int menu_choice;
+    string entry_number, reply;
+    char pick = {0};
+    Person *toAdd = nullptr;
+    Service_Item *add_item = nullptr;
+
     do      //Menu for making selections from cmd line
     {
         ClearScreen();
         cout << "\n\tWelcome MANAGER"  << endl;
         cout << "\n\tWhat would you like to do?"    << endl;
         Divider();
-        cout << " 1 - Member 1"     << endl;
-        cout << " 2 - Provider 1"    << endl;
+        cout << " 1 - Add Member / Provider / Manager"       << endl;
+        cout << " 2 - Remove Member / Provider / Manager"    << endl;
+        cout << " 3 - Edit Member / Provider / Manager"      << endl;
+        cout << "\tThese will likely get dropped into a separate menu" << endl;
+
+        cout << " 4 - Add Service"      << endl;
+        cout << " 5 - Remove Service"   << endl;
+        cout << " 6 - Edit Service"     << endl;
+        cout << "\tSame with this group" << endl;
+
+        cout << "Still need:\n\t 7 - ind report mem/pro\n\t8 - all reports" << endl;
+
         cout << endl;
-        cout << " 3 - Return to main menu"          << endl;
+        cout << " 7 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,3);
+        menu_choice = Choice(0,7);
 
         Divider();
         switch (menu_choice)
         {
-            case 1: cout << "\t\tMember one selected" << endl;
+            case 1:
+                cout << "\n\t member = M provider = P manager = C" << endl;
+                cout << "\tWhat type of person: " << endl;
+                pick = Choice("mpc");
+
+                if(toAdd->create(pick)) {
+                    if (pick == 'm') {
+                        memDS->add_person(toAdd);
+                        cout << "\nAdded person to Members" << endl;
+                    } else if (pick == 'p') {
+                        proDS->add_person(toAdd);
+                        cout << "\nAdded person to Providers" << endl;
+                    } else if (pick == 'c') {
+                        manDS->add_person(toAdd);
+                        cout << "\nAdded person to Managers" << endl;
+                    }
+                }
+                else cout << "\t\tUnable to Add selection" << endl;
                 break;
-            case 2: cout << "\t\tProvider one selected" << endl;
+
+            case 2:
+                cout << "\n\t member = M provider = P manager = C" << endl;
+                cout << "\tWhat type of person: " << endl;
+                pick = Choice("mpc");
+
+                cout << "\nEnter the id number of person to remove: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (pick == 'm') {
+                        if (VerifyPerson(memDS, entry_number, reply)) {
+                            memDS->remove_person(entry_number);
+                            cout << "\nRemoved " << entry_number << " from Members" << endl;
+                        } else { cout << "No match returning to menu." << endl;}
+                    }
+                    else if (pick == 'p') {
+                        if (VerifyPerson(proDS, entry_number, reply)) {
+                            proDS->remove_person(entry_number);
+                            cout << "\nRemoved " << entry_number << " from Providers" << endl;
+                        }else { cout << "No match returning to menu." << endl;}
+                    }
+                    else if (pick == 'c') {
+                        if (VerifyPerson(manDS, entry_number, reply)) {
+                            manDS->remove_person(entry_number);
+                            cout << "\nRemoved " << entry_number << " from Managers" << endl;
+                        } else { cout << "No match returning to menu." << endl;}
+                    }
+                    else cout << "\t\tUnable to Remove selection" << endl;
+                }
                 break;
-            case 3: cout << "\t\tReturning to main menu" << endl;
+
+            case 3: cout << "\t\tEdit Person Selected, will do later" << endl;
+                break;
+            case 4:
+                cout << "\tAdding a service" << endl;
+                if (add_item->create()) {
+                    if( servDS->add_item(add_item)) {
+                        cout << "\nAdded Service to Directory" << endl;
+                    }
+                }
+                else cout << "\n\t\tUnable to Add selection" << endl;
+                break;
+            case 5:
+                cout << "\nEnter the id number of service to remove: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if(servDS->remove_item(entry_number)) {
+                        cout << "\nRemoved Service " << entry_number << " from Directory." << endl;
+                    }
+                }
+                else cout << "\n\t\tUnable to Remove selection" << endl;
+                break;
+            case 6:
+                cout << "\nEnter the id number of service to edit: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if(servDS->edit_item(entry_number)) {
+                        cout << "\nEdited Service " << entry_number << " from Directory." << endl;
+                    }
+                }
+                else cout << "\n\t\tUnable to Edit selection" << endl;
+                break;
+
+            case 7: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;
@@ -115,7 +208,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         }
 
         Wait4Enter();
-    } while (menu_choice != 0 && menu_choice != 3);
+    } while (menu_choice != 0 && menu_choice != 7);
     Divider();
     return menu_choice;
 }
@@ -124,7 +217,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
 {
     int menu_choice;
-    string entry;
+    string entry_number, reply;
 
     do      //Menu for making selections from cmd line
     {
@@ -147,21 +240,22 @@ int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         {
             case 1:
                 cout << "\nEnter the member id number: ";
-                getline(cin, entry);
-                if (rightSize(entry, 9, 9)) {
-                    if (VerifyPerson(memDS, entry)) {
-                        cout << "\tMember status is: " + entry;
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (VerifyPerson(memDS, entry_number, reply)) {
+                        cout << "\tMember status is: " + reply;
                     }
                     else cout << "No match returning to main menu." << endl;
                 }
                 break;
-            case 2: cout << "\t\tSubmit selected" << endl;
+            case 2:
+                cout << "\t\tSubmit invoice selected //TODO invoice stuff" << endl;
                 break;
             case 3:
                 cout << "Please enter the email to send to: ";
-                getline(cin, entry);
-                servDS->write_out(entry);
-                cout << "\n\nCurrent Service Directory sent to " + entry << endl;
+                getline(cin, reply);
+                servDS->write_out(reply);
+                cout << "\n\nCurrent Service Directory sent to " << reply << endl;
                 break;
             case 4: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
@@ -177,14 +271,12 @@ int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
     return menu_choice;
 }
 
-bool VerifyPerson(People *pool, string &number)
+bool VerifyPerson(People *pool, string number, string &reply)
 {
     Person *result = pool->find_person(number);
     if (result) {
-        number = result->getStatus();
-        //if (number == "Valid" ) {
-            return true;
-        //}
+        reply = result->getStatus();
+        return true;
     }
     return false;
 }

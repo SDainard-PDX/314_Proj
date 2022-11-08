@@ -29,6 +29,7 @@ class Service_Directory
         int populate(const std::string& file_in);
         bool add_item(Service_Item *to_add);
         Service_Item * find_item(std::string num_to_find);
+        bool edit_item(std::string num_to_edit);
         bool remove_item(std::string num_to_remove);
         bool write_out(std::string file_out);
 

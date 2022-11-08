@@ -86,6 +86,13 @@ bool People::add_person(Person *toAdd)
     return true;
 }
 
+bool People::edit_item(std::string edit)
+{
+    if(!head) {return false; }
+    Person *temp = find_person(edit);
+    return temp->edit();
+}
+
 bool People::remove_person(string remove)
 {
     PeopleNode *curr = head, *prev = nullptr, *del = nullptr;

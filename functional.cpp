@@ -23,6 +23,21 @@ void Wait4Enter()
     cout << "\nPress Enter to continue..."; while (cin.get()!='\n');
 }
 
+char Choice(string options)
+{
+    string c;
+    char ci;
+
+    getline(cin, c);
+    ci = tolower(c[0]);
+    for(int i = 0; i < (int)(c.length()); i++) {
+        if (ci == tolower(options[i])) { return ci; }
+    }
+
+    cout << c <<" is an invalid selection, please make a valid selection.";
+    return Choice(options);
+}
+
 int Choice(int low, int high)
 {
     char c[20];

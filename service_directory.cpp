@@ -79,6 +79,13 @@ bool Service_Directory::add_item(Service_Item *toAdd)
     return true;
 }
 
+bool Service_Directory::edit_item(std::string edit)
+{
+    if(!head) {return false; }
+    Service_Item *temp = find_item(edit);
+    return temp->edit();
+}
+
 bool Service_Directory::remove_item(string remove)
 {
     Service_DirectoryNode *curr = head, *prev = nullptr, *del = nullptr;

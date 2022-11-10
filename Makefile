@@ -3,45 +3,45 @@ CFLAGS = $(DEBUG) -Wall
 DEBUG = -g
 DEFINES =
 PROG1 = chocan
-PROG2 = functional
-PROG3 = person
-PROG4 = people
-PROG5 = service_item
-PROG6 = service_directory
-PROG7 = invoice
+UNIT[1] = functional
+UNIT[2] = person
+UNIT[3] = people
+UNIT[4] = service_item
+UNIT[5] = service_directory
+UNIT[6] = invoice
 
-PROGS = $(PROG1) #$(PROG2) $(PROG3) $(PROG4) $(PROG5) $(PROG6) $(PROG7)
+PROGS = $(PROG1) 
 
 all: $(PROGS)
 
 
-$(PROG1): $(PROG1).o $(PROG2).o $(PROG3).o $(PROG4).o $(PROG5).o $(PROG6).o $(PROG7).o
+$(PROG1): $(PROG1).o $(UNIT[1]).o $(UNIT[2]).o $(UNIT[3]).o $(UNIT[4]).o $(UNIT[5]).o $(UNIT[6]).o
 	$(CC) $(CFLAGS) -o $@ $^
 	chmod a+rx,g-w $@
 
 $(PROG1).o:  $(PROG1).cpp $(PROG1).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG2).o:  $(PROG2).cpp $(PROG2).hpp Makefile
+$(UNIT[1]).o:  $(UNIT[1]).cpp $(UNIT[1]).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG3).o:  $(PROG3).cpp $(PROG3).hpp Makefile
+$(UNIT[2]).o:  $(UNIT[2]).cpp $(UNIT[2]).hpp $(UNIT) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG4).o:  $(PROG4).cpp $(PROG4).hpp Makefile
+$(UNIT[3]).o:  $(UNIT[3]).cpp $(UNIT[3]).hpp $(UNIT1) $(UNIT2) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG5).o:  $(PROG5).cpp $(PROG5).hpp Makefile
+$(UNIT[4]).o:  $(UNIT[4]).cpp $(UNIT[4]).hpp $(UNIT1) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG6).o:  $(PROG6).cpp $(PROG6).hpp Makefile
+$(UNIT[5]).o:  $(UNIT[5]).cpp $(UNIT[5]).hpp $(UNIT1) $(UNIT4) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(PROG7).o:  $(PROG7).cpp $(PROG7).hpp Makefile
+$(UNIT[6]).o:  $(UNIT[6]).cpp $(UNIT[6]).hpp $(UNIT1) Makefile
 	$(CC) $(CFLAGS) -c $<
 
 opt: clean
-	make DEBUG=-O3
+	make DEBUG=-O#
 
 tar: clean
 	tar cvfz $(PROG1).tar.gz *.[ch] ?akefile
@@ -56,7 +56,7 @@ ci:
 
 # if you are in more of a git Boom Boom Pow mood.
 # "Gotta git [sic] that"
-#   https://www.youtube.com/watch?v=4m48GqaOz90
+#   https://www.youtube.com/watch?v=#m#8GqaOz90
 git get gat:
 	if [ ! -d .git ] ; then git init; fi
 	git add *.[ch] ?akefile

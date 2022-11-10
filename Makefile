@@ -1,6 +1,7 @@
+CC = g++
+CFLAGS = $(DEBUG) -Wall
 DEBUG = -g
 DEFINES =
-CFLAGS = $(DEBUG) -Wall
 PROG1 = chocan
 PROG2 = functional
 PROG3 = person

@@ -34,8 +34,8 @@ int Service_Directory::populate(const string& file_in)
     if(!in_file.is_open()) return 0;
 
     //temp variables for input
-    string  numIn = {0};
-    string  nameIn = {0};
+    string  numIn = {0}, nameIn = {0};
+    string fee = {0};
     double  feeIn = 0.0;
     int count = 0;  //temp variable to return items input
 
@@ -44,8 +44,8 @@ int Service_Directory::populate(const string& file_in)
     {
         //get temp values from file
         getline(in_file, nameIn, ',');
-        cin >> feeIn;
-        Safety();
+        getline(in_file, fee);
+        feeIn = stof(fee);
         //create person to add
         Service_Item *toAdd = new Service_Item(numIn, nameIn, feeIn);
 

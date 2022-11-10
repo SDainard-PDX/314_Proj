@@ -6,13 +6,16 @@ PROG1 = chocan
 PROG2 = functional
 PROG3 = person
 PROG4 = people
+PROG5 = service_item
+PROG6 = service_directory
+PROG7 = invoice
 
-PROGS = $(PROG1) $(PROG2) $(PROG3) $(PROG4)
+PROGS = $(PROG1) #$(PROG2) $(PROG3) $(PROG4) $(PROG5) $(PROG6) $(PROG7)
 
 all: $(PROGS)
 
 
-$(PROG1): $(PROG1).o $(PROG2).o $(PROG3).o $(PROG4).o
+$(PROG1): $(PROG1).o $(PROG2).o $(PROG3).o $(PROG4).o $(PROG5).o $(PROG6).o $(PROG7).o
 	$(CC) $(CFLAGS) -o $@ $^
 	chmod a+rx,g-w $@
 
@@ -28,7 +31,14 @@ $(PROG3).o:  $(PROG3).cpp $(PROG3).hpp Makefile
 $(PROG4).o:  $(PROG4).cpp $(PROG4).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
+$(PROG5).o:  $(PROG5).cpp $(PROG5).hpp Makefile
+	$(CC) $(CFLAGS) -c $<
 
+$(PROG6).o:  $(PROG6).cpp $(PROG6).hpp Makefile
+	$(CC) $(CFLAGS) -c $<
+
+$(PROG7).o:  $(PROG7).cpp $(PROG7).hpp Makefile
+	$(CC) $(CFLAGS) -c $<
 
 opt: clean
 	make DEBUG=-O3

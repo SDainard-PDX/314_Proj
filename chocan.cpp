@@ -16,6 +16,8 @@ int main()
     manDS->populate(MANAGERS_FILE, 'c');
     Service_Directory *servDS = new Service_Directory();
     servDS->populate(SERVICE_DIR_FILE);
+    Invoice_Chain *invoiceDS = new Invoice_Chain();
+    invoiceDS->populate(INVOICE_FILE);
 
 //Initial Menu Selection and log-in
     int menu_choice;
@@ -53,7 +55,7 @@ int main()
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(proDS, entry_number, reply)) {
-                        menu_choice = Menu3(manDS, proDS, memDS, servDS);
+                        menu_choice = Menu3(entry_number, manDS, proDS, memDS, servDS, invoiceDS);
                     }//goto menu 3
                     else cout << "No match returning to main menu." << endl;
                 }
@@ -76,6 +78,8 @@ int main()
     delete memDS;
     servDS->write_out(SERVICE_DIR_FILE);
     delete servDS;
+    invoiceDS->write_out(INVOICE_FILE);
+    delete invoiceDS;
 
     return 1; // SUCCESS
 }
@@ -97,7 +101,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         Divider();
         cout << " 1 - Add Member / Provider / Manager"       << endl;
         cout << " 2 - Remove Member / Provider / Manager"    << endl;
-        cout << " 3 - Edit Member / Provider / Manager"      << endl;
+        cout << " 3 - Edit Member / Provider / Manager"      << endl;//TODO
         cout << "\tThese will likely get dropped into a separate menu" << endl;
 
         cout << " 4 - Add Service"      << endl;
@@ -214,10 +218,12 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 }
 
 //Providers Menu
-int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
+int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
+          Service_Directory *servDS, Invoice_Chain *invoiceDS)
 {
     int menu_choice;
     string entry_number, reply;
+    Session_Invoice *addition = nullptr;
 
     do      //Menu for making selections from cmd line
     {
@@ -249,7 +255,10 @@ int Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 break;
             case 2:
-                cout << "\t\tSubmit invoice selected //TODO invoice stuff" << endl;
+                addition = new Session_Invoice;
+                addition->create(Pro_Number);
+                if (addition) { invoiceDS->add_invoice(addition); }
+                else cout << "\nUnable to create Invoice, no changes" << endl;
                 break;
             case 3:
                 cout << "Please enter the email to send to: ";

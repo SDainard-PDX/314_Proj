@@ -4,6 +4,8 @@
 #include "people.hpp"
 #include "service_item.hpp"
 #include "service_directory.hpp"
+#include "invoice.hpp"
+#include "invoice_chain.hpp"
 
 #include <string>
 #include <algorithm>
@@ -14,6 +16,7 @@
 #define PROVIDERS_FILE "providers.csv"
 #define MEMBERS_FILE "members.csv"
 #define SERVICE_DIR_FILE "service_directory.csv"
+#define INVOICE_FILE "current_invoices.csv"
 
 //Menu Function Declarations
 bool VerifyPerson(People *pool, std::string number, std::string &reply);
@@ -24,4 +27,5 @@ Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS);
 
 //Providers Menu
 int
-Menu3(People *manDS, People *proDS, People *memDS, Service_Directory *servDS);
+Menu3(std::string Pro_Number, People *manDS, People *proDS,
+      People *memDS, Service_Directory *servDS, Invoice_Chain *invoiceDS);

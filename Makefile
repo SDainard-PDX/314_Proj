@@ -3,41 +3,45 @@ CFLAGS = $(DEBUG) -Wall
 DEBUG = -g
 DEFINES =
 PROG1 = chocan
-UNIT[1] = functional
-UNIT[2] = person
-UNIT[3] = people
-UNIT[4] = service_item
-UNIT[5] = service_directory
-UNIT[6] = invoice
+UNIT1 = functional
+UNIT2 = person
+UNIT3 = people
+UNIT4 = service_item
+UNIT5 = service_directory
+UNIT6 = invoice
+UNIT7 = invoice_chain
 
 PROGS = $(PROG1) 
 
 all: $(PROGS)
 
 
-$(PROG1): $(PROG1).o $(UNIT[1]).o $(UNIT[2]).o $(UNIT[3]).o $(UNIT[4]).o $(UNIT[5]).o $(UNIT[6]).o
+$(PROG1): $(PROG1).o $(UNIT1).o $(UNIT2).o $(UNIT3).o $(UNIT4).o $(UNIT5).o $(UNIT6).o $(UNIT7).o
 	$(CC) $(CFLAGS) -o $@ $^
 	chmod a+rx,g-w $@
 
 $(PROG1).o:  $(PROG1).cpp $(PROG1).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[1]).o:  $(UNIT[1]).cpp $(UNIT[1]).hpp Makefile
+$(UNIT1).o:  $(UNIT1).cpp $(UNIT1).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[2]).o:  $(UNIT[2]).cpp $(UNIT[2]).hpp $(UNIT) Makefile
+$(UNIT2).o:  $(UNIT2).cpp $(UNIT2).hpp $(UNIT1) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[3]).o:  $(UNIT[3]).cpp $(UNIT[3]).hpp $(UNIT1) $(UNIT2) Makefile
+$(UNIT3).o:  $(UNIT3).cpp $(UNIT3).hpp $(UNIT1) $(UNIT2) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[4]).o:  $(UNIT[4]).cpp $(UNIT[4]).hpp $(UNIT1) Makefile
+$(UNIT4).o:  $(UNIT4).cpp $(UNIT4).hpp $(UNIT1) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[5]).o:  $(UNIT[5]).cpp $(UNIT[5]).hpp $(UNIT1) $(UNIT4) Makefile
+$(UNIT5).o:  $(UNIT5).cpp $(UNIT5).hpp $(UNIT1) $(UNIT4) Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT[6]).o:  $(UNIT[6]).cpp $(UNIT[6]).hpp $(UNIT1) Makefile
+$(UNIT6).o:  $(UNIT6).cpp $(UNIT6).hpp $(UNIT1) Makefile
+	$(CC) $(CFLAGS) -c $<
+
+$(UNIT7).o:  $(UNIT7).cpp $(UNIT7).hpp $(UNIT1) $(UNIT6) Makefile
 	$(CC) $(CFLAGS) -c $<
 
 opt: clean

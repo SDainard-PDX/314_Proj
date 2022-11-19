@@ -3,13 +3,23 @@
 using namespace std;
 
 //<Session_Invoice>
-Session_Invoice::Session_Invoice(): serv_code("-1"), pro_num("-1"), mem_num("-1"), comments("none"){}
+Session_Invoice::Session_Invoice(): invoice_num(-1), serv_code("-1"),
+                pro_num("-1"), mem_num("-1"), comments("none") {}
 
-Session_Invoice::~Session_Invoice() {}
+Session_Invoice::Session_Invoice(string servNumIn, string proNumIn,
+                    string memNumIn, tm *servDateIn, tm *subTimeIn, string commIn):
+        invoice_num(-1), serv_code(servNumIn), pro_num(proNumIn), mem_num(memNumIn),
+                serv_date(servDateIn), sub_time(subTimeIn), comments("none") {}
 
-bool Session_Invoice::create(string pro){
+Session_Invoice::~Session_Invoice()
+{
+    delete serv_date;
+    delete sub_time;
+}
+
+Session_Invoice * Session_Invoice::create(string pro){
     errstruc ERS;
-    Session_Invoice *newInvoice = new Session_Invoice();
+
     try
     {
         string mem, serv, comm;
@@ -36,20 +46,25 @@ bool Session_Invoice::create(string pro){
         getline(cin,comm);
         if(!rightSize(serv, 0, 100)) throw 'C';
 
-        newInvoice->pro_num = pro;
-        newInvoice->mem_num = mem;
-        newInvoice->serv_code = serv;
-        newInvoice->serv_date->tm_year = yr;
-        newInvoice->serv_date->tm_mon = mo;
-        newInvoice->serv_date->tm_mday = da;
+        serv_date = new tm;
+        sub_time = new tm;
+
+        invoice_num = 0;
+        pro_num = pro;
+        mem_num = mem;
+        serv_code = serv;
+        serv_date->tm_year = yr;
+        serv_date->tm_mon = mo;
+        serv_date->tm_mday = da;
+        comments = comm;
 
         cout << "Please review the following:" << endl;
-        newInvoice->display();
+        display();
         cout << "Would you like to make any changes [Y/N]? ";
-        if(YorN()) { newInvoice->edit(pro); }
+        if(YorN()) { edit(); }
         else {
             time_t now = time(0);
-            newInvoice->sub_time = localtime(&now);
+            sub_time = localtime(&now);
         }
 
     }
@@ -58,33 +73,39 @@ bool Session_Invoice::create(string pro){
         if (E == 'S')  ERS.genIntMax("Service Number", 6);
         if (E == 'C')  ERS.genIntMax("Comments", 100);
 
-        return false;
+        return nullptr;
     }
-    return true;
+    return this;
 }
 
-bool Session_Invoice::edit(string pro)
+bool Session_Invoice::edit()
 {
     cout << "This Service Items current information is: " << endl;
     display();
 
     cout << "Make changes here, kept information must be re-entered." << endl;
-    create(pro);
+    create(this->getProNum());
 
     return true;
 }
 
 void Session_Invoice::display() const
 {
-    cout << "\nProvider Number: " << pro_num << endl;
+    cout << "\n Invoice Number: " << setfill('0') << setw(6) << invoice_num << endl;
+    cout << "Provider Number: " << pro_num << endl;
     cout << "  Member Number: " << mem_num << endl;
     cout << "  Service Code : " << serv_code << endl;
-    cout << "   Service Date: " << serv_date->tm_mon << "-"
+    cout << "  Service Date : " << serv_date->tm_mon << "-"
         << serv_date->tm_mday << "-" << serv_date->tm_year << endl;
     cout << "Comments: " << comments << endl;
 }
 
-
+int Session_Invoice::getInvNum() const { return invoice_num; }
 string Session_Invoice::getSerNum() const { return serv_code; }
 string Session_Invoice::getProNum() const { return pro_num; }
 string Session_Invoice::getMemNum() const { return mem_num; }
+tm * Session_Invoice::getServDate() const { return serv_date; }
+tm * Session_Invoice::getSubTime() const { return  sub_time; }
+string Session_Invoice::getComments() const { return comments; }
+
+void Session_Invoice::setInvNum(int cnt_in) { invoice_num = cnt_in; }

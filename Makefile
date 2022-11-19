@@ -9,13 +9,14 @@ PROG4 = people
 PROG5 = service_item
 PROG6 = service_directory
 PROG7 = invoice
+PROG8 = invoice_chain
 
-PROGS = $(PROG1) #$(PROG2) $(PROG3) $(PROG4) $(PROG5) $(PROG6) $(PROG7)
+PROGS = $(PROG1) #$(PROG2) $(PROG3) $(PROG4) $(PROG5) $(PROG6) $(PROG7) $(PROG8)
 
 all: $(PROGS)
 
 
-$(PROG1): $(PROG1).o $(PROG2).o $(PROG3).o $(PROG4).o $(PROG5).o $(PROG6).o $(PROG7).o
+$(PROG1): $(PROG1).o $(PROG2).o $(PROG3).o $(PROG4).o $(PROG5).o $(PROG6).o $(PROG7).o $(PROG8).o
 	$(CC) $(CFLAGS) -o $@ $^
 	chmod a+rx,g-w $@
 
@@ -38,6 +39,9 @@ $(PROG6).o:  $(PROG6).cpp $(PROG6).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
 $(PROG7).o:  $(PROG7).cpp $(PROG7).hpp Makefile
+	$(CC) $(CFLAGS) -c $<
+
+$(PROG8).o:  $(PROG8).cpp $(PROG8).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
 opt: clean

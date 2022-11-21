@@ -199,6 +199,16 @@ bool Invoice_Chain::remove_invoice(int inv_num)
     return true;
 }
 
+void Invoice_Chain::display_all()
+{
+    if(!inv_num_head) return;
+    Invoice_ChainNode *curr = inv_num_head;
+    while (curr) {
+        curr->invoice->display();
+        cout << endl;
+    }
+}
+
 bool Invoice_Chain::write_out(string file_out)
 {
     ofstream output_file(file_out);

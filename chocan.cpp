@@ -31,11 +31,15 @@ int main()
         Divider();
         cout << " 1 - Use the Manager Terminal"         << endl;
         cout << " 2 - Use the Provider Terminal"        << endl;
+        cout << " 3 - Display all Providers"            << endl;
+        cout << " 4 - Display all Members"              << endl;
+        cout << " 5 - Display all Managers"             << endl;
+        cout << " 5 - Display Service Directory"        << endl;
         cout << endl;
         cout << " 0 - Quit and exit"                    << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,2);
+        menu_choice = Choice(0,6);
 
         Divider();
         switch (menu_choice)
@@ -59,6 +63,22 @@ int main()
                     }//goto menu 3
                     else cout << "No match returning to main menu." << endl;
                 }
+                break;
+            case 3:
+                cout << endl;
+                proDS->display_all();
+                break;
+            case 4:
+                cout << endl;
+                memDS->display_all();
+                break;
+            case 5:
+                cout << endl;
+                manDS->display_all();
+                break;
+            case 6:
+                cout << endl;
+                servDS->display_all();
                 break;
             case 0: cout << "\t\tGood-bye!" << endl;
                 break;

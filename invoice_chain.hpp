@@ -35,6 +35,7 @@ class Invoice_Chain
         Session_Invoice * find_invoice(int inv_num);
         bool edit_invoice(int invoice_number_to_edit);
         bool remove_invoice(int invoice_number_to_remove);
+        void display_all();
         bool write_out(std::string file_out);
 
         int getInvoiceCnt();

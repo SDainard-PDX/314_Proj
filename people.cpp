@@ -70,14 +70,20 @@ bool People::add_person(Person *toAdd)
 {
     PeopleNode *newPerson = new PeopleNode(toAdd);
     PeopleNode *curr = head, *prev = nullptr;
+    if (!toAdd) { return false; }
 
     if (!head) { head = newPerson; }
     else {
         while (toAdd->getNumber() > curr->person->getNumber() && curr->next) {
+            //ensures not adding a number that exists
+            if ( toAdd->getNumber() == curr->person->getNumber() ) {
+                cout << "\n\tCannot add new person, id number already exists.\n" << endl;
+                return false;
+            }
             prev = curr;
             curr = curr->next;
         }
-        if (!curr->next) { curr->next = newPerson;}
+        if (!curr->next) { curr->next = newPerson; }
         else {
             if(prev) prev->next = newPerson;
             newPerson->next = curr;
@@ -124,6 +130,16 @@ Person * People::find_person(string match)
         curr = curr->next;
     }
     return result;
+}
+
+void People::display_all()
+{
+    if(!head) return;
+    PeopleNode *curr = head;
+    while (curr) {
+        curr->person->display();
+        cout << endl;
+    }
 }
 
 bool People::write_out(string file_out)

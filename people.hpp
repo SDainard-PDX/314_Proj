@@ -31,6 +31,7 @@ class People
         Person * find_person(std::string num_to_find);
         bool edit_item(std::string num_to_edit);
         bool remove_person(std::string num_to_remove);
+        void display_all();
         bool write_out(std::string file_out);
 
     protected:

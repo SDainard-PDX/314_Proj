@@ -17,7 +17,7 @@ Person::Person(string numberIn, string nameIn, string addressIn, string cityIn,
 
 Person * Person::create(char type_code){
     errstruc ERS;
-    Person *newPerson;
+    Person *newPerson = nullptr;
 
     try
     {

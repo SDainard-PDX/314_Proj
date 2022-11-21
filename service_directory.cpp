@@ -119,6 +119,16 @@ Service_Item * Service_Directory::find_item(string match)
     return result;
 }
 
+void Service_Directory::display_all()
+{
+    if(!head) return;
+    Service_DirectoryNode *curr = head;
+    while (curr) {
+        curr->item->display();
+        cout << endl;
+    }
+}
+
 bool Service_Directory::write_out(string file_out)
 {
     ofstream output_file(file_out);

@@ -40,10 +40,10 @@ int Service_Directory::populate(const string& file_in)
     int count = 0;  //temp variable to return items input
 
     //loop over input until EOF
-    while(getline(in_file, numIn, ','))
+    while(getline(in_file, nameIn, ','))
     {
         //get temp values from file
-        getline(in_file, nameIn, ',');
+        getline(in_file, numIn, ',');
         getline(in_file, fee);
         feeIn = stof(fee);
         //create person to add
@@ -61,18 +61,26 @@ int Service_Directory::populate(const string& file_in)
 
 bool Service_Directory::add_item(Service_Item *toAdd)
 {
+    if (!toAdd) { return false; }
     Service_DirectoryNode *newItem = new Service_DirectoryNode(toAdd);
     Service_DirectoryNode *curr = head, *prev = nullptr;
 
     if (!head) { head = newItem; }
     else {
-        while (toAdd->getNum() > curr->item->getNum() && curr->next) {
+        while (toAdd->getName() > curr->item->getName() && curr->next) {
+            if (toAdd->getNum() == curr->item->getNum()) { return false; }
             prev = curr;
             curr = curr->next;
         }
-        if (!curr->next) { curr->next = newItem;}
-        else {
-            if(prev) prev->next = newItem;
+        if (!curr->next) {
+            if (curr == head) {
+                head = newItem;
+                newItem->next = curr;
+            } else {
+                curr->next = newItem;
+            }
+        } else {
+            if (prev) prev->next = newItem;
             newItem->next = curr;
         }
     }
@@ -137,7 +145,7 @@ bool Service_Directory::write_out(string file_out)
     Service_DirectoryNode *curr = head;
     while(curr) {
         Service_Item *temp = curr->item;
-        output_file << temp->getNum() << "," << temp->getName() << "," << temp->getFee() << endl;
+        output_file << temp->getName() << "," << temp->getNum() << "," << temp->getFee() << endl;
         curr = curr->next;
     }
 

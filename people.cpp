@@ -57,7 +57,7 @@ int People::populate(const string& file_in, char type_in)
         Person *toAdd = new Person(numIn, nameIn, addressIn, cityIn, stateIn, zipIn, statusIn, type_in);
 
         //add the vehicle to the table & increment count
-        add_person(toAdd);
+        if (!add_person(toAdd)) delete toAdd; //if add fails ensures no leak
         count++;
     }
 

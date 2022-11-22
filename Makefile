@@ -26,22 +26,22 @@ $(PROG1).o:  $(PROG1).cpp $(PROG1).hpp Makefile
 $(UNIT1).o:  $(UNIT1).cpp $(UNIT1).hpp Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT2).o:  $(UNIT2).cpp $(UNIT2).hpp $(UNIT1) Makefile
+$(UNIT2).o:  $(UNIT2).cpp $(UNIT2).hpp $(UNIT1).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT3).o:  $(UNIT3).cpp $(UNIT3).hpp $(UNIT1) $(UNIT2) Makefile
+$(UNIT3).o:  $(UNIT3).cpp $(UNIT3).hpp $(UNIT1).o $(UNIT2).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT4).o:  $(UNIT4).cpp $(UNIT4).hpp $(UNIT1) Makefile
+$(UNIT4).o:  $(UNIT4).cpp $(UNIT4).hpp $(UNIT1).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT5).o:  $(UNIT5).cpp $(UNIT5).hpp $(UNIT1) $(UNIT4) Makefile
+$(UNIT5).o:  $(UNIT5).cpp $(UNIT5).hpp $(UNIT1).o $(UNIT4).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT6).o:  $(UNIT6).cpp $(UNIT6).hpp $(UNIT1) Makefile
+$(UNIT6).o:  $(UNIT6).cpp $(UNIT6).hpp $(UNIT1).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
-$(UNIT7).o:  $(UNIT7).cpp $(UNIT7).hpp $(UNIT1) $(UNIT6) Makefile
+$(UNIT7).o:  $(UNIT7).cpp $(UNIT7).hpp $(UNIT1).o $(UNIT6).o Makefile
 	$(CC) $(CFLAGS) -c $<
 
 opt: clean

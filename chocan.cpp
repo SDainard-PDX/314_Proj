@@ -34,7 +34,7 @@ int main()
         cout << " 3 - Display all Providers"            << endl;
         cout << " 4 - Display all Members"              << endl;
         cout << " 5 - Display all Managers"             << endl;
-        cout << " 5 - Display Service Directory"        << endl;
+        cout << " 6 - Display Service Directory"        << endl;
         cout << endl;
         cout << " 0 - Quit and exit"                    << endl;
         cout << endl;

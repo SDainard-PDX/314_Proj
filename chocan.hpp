@@ -16,7 +16,8 @@
 #define PROVIDERS_FILE "providers.csv"
 #define MEMBERS_FILE "members.csv"
 #define SERVICE_DIR_FILE "service_directory.csv"
-#define INVOICE_FILE "current_invoices.csv"
+#define INVOICE_FILE_IN "invoices_in.csv"
+#define INVOICE_FILE_OUT "invoices_out.csv"
 
 //Menu Function Declarations
 bool VerifyPerson(People *pool, std::string number, std::string &reply);

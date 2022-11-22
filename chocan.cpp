@@ -17,7 +17,7 @@ int main()
     Service_Directory *servDS = new Service_Directory();
     servDS->populate(SERVICE_DIR_FILE);
     Invoice_Chain *invoiceDS = new Invoice_Chain();
-    invoiceDS->populate(INVOICE_FILE);
+    invoiceDS->populate(INVOICE_FILE_IN);
 
 //Initial Menu Selection and log-in
     int menu_choice;
@@ -98,7 +98,7 @@ int main()
     delete memDS;
     servDS->write_out(SERVICE_DIR_FILE);
     delete servDS;
-    invoiceDS->write_out(INVOICE_FILE);
+    invoiceDS->write_out(INVOICE_FILE_OUT);
     delete invoiceDS;
 
     return 1; // SUCCESS

@@ -85,7 +85,7 @@ int Invoice_Chain::populate(const string& file_in)
         toAdd->setInvNum(++invoice_count);
 
         //add the vehicle to the table & increment count
-        add_invoice(toAdd);
+        if (!add_invoice(toAdd)) { delete toAdd; };
         count++;
     }
 
@@ -97,7 +97,9 @@ int Invoice_Chain::populate(const string& file_in)
 bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
 {
     Invoice_ChainNode *newinvoice = new Invoice_ChainNode(toAdd);
-    Invoice_ChainNode *curr = pro_head, *prev = nullptr;
+    Invoice_ChainNode *curr = inv_num_head, *prev = nullptr;
+
+    if (!toAdd) { return false; }
 
 //this first bit is good for both since if one empty the other empty
     if (!pro_head && !mem_head && !inv_num_head) {
@@ -106,39 +108,61 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
         inv_num_head = newinvoice;
     }
     else {
-//first run through to place in providers chain
+//first run it for inv_num
+        while (toAdd->getInvNum() > curr->invoice->getInvNum() && curr->inv_num_next) {
+            if (toAdd->getInvNum() == curr->invoice->getInvNum()) { return false; }
+            prev = curr;
+            curr = curr->inv_num_next;
+        }
+        if (!curr->inv_num_next) {
+            if (curr == inv_num_head) {
+                inv_num_head = newinvoice;
+                newinvoice->inv_num_next = curr;
+            } else {
+                curr->inv_num_next = newinvoice;
+            }
+        }
+        else {
+            if(prev) prev->inv_num_next = newinvoice;
+            newinvoice->inv_num_next = curr;
+        }
+//second run through to place in providers chain
+        curr = pro_head;
+        prev = nullptr;
         while (toAdd->getProNum() > curr->invoice->getProNum() && curr->pro_next) {
             prev = curr;
             curr = curr->pro_next;
         }
-        if (!curr->pro_next) { curr->pro_next = newinvoice;}
+        if (!curr->pro_next) {
+            if (curr == pro_head) {
+                pro_head = newinvoice;
+                newinvoice->pro_next = curr;
+            } else {
+            curr->pro_next = newinvoice;
+            }
+        }
         else {
             if(prev) prev->pro_next = newinvoice;
             newinvoice->pro_next = curr;
         }
-//repeat the process for members chain
+//lastly the process for members chain
         curr = mem_head;
         prev = nullptr;
         while (toAdd->getMemNum() > curr->invoice->getMemNum() && curr->mem_next) {
             prev = curr;
             curr = curr->mem_next;
         }
-        if (!curr->mem_next) { curr->mem_next = newinvoice;}
+        if (!curr->mem_next) {
+            if (curr == mem_head) {
+                mem_head = newinvoice;
+                newinvoice->mem_next = curr;
+            } else {
+                curr->mem_next = newinvoice;
+            }
+        }
         else {
             if(prev) prev->mem_next = newinvoice;
             newinvoice->mem_next = curr;
-        }
-//lastly repeat it again for inv_num
-        curr = inv_num_head;
-        prev = nullptr;
-        while (toAdd->getInvNum() > curr->invoice->getInvNum() && curr->inv_num_next) {
-            prev = curr;
-            curr = curr->inv_num_next;
-        }
-        if (!curr->inv_num_next) { curr->inv_num_next = newinvoice;}
-        else {
-            if(prev) prev->inv_num_next = newinvoice;
-            newinvoice->inv_num_next = curr;
         }
     }
     return true;

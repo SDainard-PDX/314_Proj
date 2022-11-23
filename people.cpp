@@ -139,6 +139,7 @@ void People::display_all()
     while (curr) {
         curr->person->display();
         cout << endl;
+		curr = curr->next;
     }
 }
 

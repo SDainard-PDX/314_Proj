@@ -296,7 +296,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 		if(pro_id != curr_inv->invoice->getProNum()) { //new provider
 			//write out old provider's info
 			std::string pro_name = proDS->find_person(pro_id)->getName();
-			output_file << "\t" << pro_name << "#" << pro_id << endl
+			output_file << "\t" << pro_name << " #" << pro_id << endl
 						<< "\tTotal consultations: " << pro_consuls << endl
 						<< "\tFee due: $" << pro_fee << endl;
 

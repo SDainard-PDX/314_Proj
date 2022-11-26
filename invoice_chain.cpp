@@ -257,4 +257,79 @@ bool Invoice_Chain::write_out(string file_out)
     return true;
 }
 
+bool Invoice_Chain::person_report(std::string id, char type)
+{
+}
+
+bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
+{
+	if(!pro_head)
+		return false; //TODO: throw error?
+	
+	int total_pro = 1;
+	int total_consuls = 0;
+	int total_fee = 0;
+	int pro_consuls = 0;
+	int pro_fee = 0;
+
+	Invoice_ChainNode *curr_inv = pro_head;
+	std::string pro_id = curr_inv->invoice->getProNum();
+
+	tm *curr_time = new tm;
+	time_t now = time(0);
+	curr_time = localtime(&now);
+
+	//TODO: specify path into separate reports folder
+	std::string file_out = "AccountsPayable"
+						  + std::to_string(curr_time->tm_mon + 1) + "-"
+						  + std::to_string(curr_time->tm_mday) + "-"
+						  + std::to_string(curr_time->tm_year + 1900) + ".txt";
+
+    ofstream output_file;
+	output_file.open(file_out);
+    if(!output_file.is_open()) return false;
+
+	output_file << "Providers To Be Paid:" << endl;
+
+	//while loop--go through providers,
+	while(curr_inv) {
+		if(pro_id != curr_inv->invoice->getProNum()) { //new provider
+			//write out old provider's info
+			std::string pro_name = proDS->find_person(pro_id)->getName();
+			output_file << "\t" << pro_name << "#" << pro_id << endl
+						<< "\tTotal consultations: " << pro_consuls << endl
+						<< "\tFee due: $" << pro_fee << endl;
+
+			//now prime for new provider
+			pro_fee = pro_consuls = 0;
+			pro_id = curr_inv->invoice->getProNum();
+			++total_pro;
+		}
+		Service_Item *serv = servDS->find_item(curr_inv->invoice->getSerNum());
+
+		//TODO: make it so session invoices can't have invalid services
+		if(!serv) //invalid service in session invoices
+		{
+			curr_inv = curr_inv->pro_next;
+			continue; //throw error too
+		}
+		double fee = serv->getFee();
+		total_fee += fee;
+		pro_fee += fee;
+		++total_consuls;
+		
+		curr_inv = curr_inv->pro_next;
+	}
+	//total up consuls & fees,
+	//write to file
+	//afterwards:
+	
+	output_file << "Total Providers To Be Paid: " << total_pro << endl
+	            << "Total Consultations: " << total_consuls << endl
+	            << "Total Fee Due: $" << total_fee << endl;
+
+	output_file.close();
+	return true;
+}
+
 int Invoice_Chain::getInvoiceCnt() { return ++invoice_count; }

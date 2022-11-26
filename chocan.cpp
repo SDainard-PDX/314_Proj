@@ -49,7 +49,7 @@ int main()
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(manDS, entry_number, reply)) {
-                        menu_choice = Menu2(manDS, proDS, memDS, servDS);
+                        menu_choice = Menu2(manDS, proDS, memDS, servDS, invoiceDS);
                     }//goto menu 2
                     else { cout << "No match returning to main menu." << endl;}
                 }
@@ -105,7 +105,7 @@ int main()
 }
 
 //Managers Menu
-int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
+int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS, Invoice_Chain *invoiceDS)
 {
     int menu_choice;
     string entry_number, reply;
@@ -129,14 +129,15 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         cout << " 6 - Edit Service"     << endl;
         cout << "\tSame with this group" << endl;
 
-        cout << "Still need:\n\t 7 - ind report mem/pro\n\t8 - all reports" << endl;
+        cout << " 7 - Generate Summary Report for Member/Provider"   << endl;
+		cout << " 8 - Generate Report of Accounts Payable"           << endl;
 
         cout << endl;
-        cout << " 7 - Return to main menu"         << endl;
+        cout << " 9 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,7);
+        menu_choice = Choice(0,9);
 
         Divider();
         switch (menu_choice)
@@ -222,8 +223,12 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 else cout << "\n\t\tUnable to Edit selection" << endl;
                 break;
-
-            case 7: cout << "\t\tReturning to main menu" << endl;
+			case 7:			//member/provider summary report
+				break;
+			case 8: 		//accounts payable
+				invoiceDS->acts_payable(proDS, servDS);	
+				break;
+            case 9: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;

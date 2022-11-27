@@ -290,6 +290,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
     if(!output_file.is_open()) return false;
 
 	output_file << "Providers To Be Paid:" << endl;
+	cout << "Providers To Be Paid:" << endl;
 
 	//while loop--go through providers,
 	while(curr_inv) {
@@ -299,6 +300,10 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 			output_file << "\t" << pro_name << " #" << pro_id << endl
 						<< "\tTotal consultations: " << pro_consuls << endl
 						<< "\tFee due: $" << pro_fee << endl;
+
+			cout << "\t" << pro_name << " #" << pro_id << endl
+				 << "\tTotal consultations: " << pro_consuls << endl
+				 << "\tFee due: $" << pro_fee << endl;
 
 			//now prime for new provider
 			pro_fee = pro_consuls = 0;
@@ -328,7 +333,13 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	            << "Total Consultations: " << total_consuls << endl
 	            << "Total Fee Due: $" << total_fee << endl;
 
+	cout << "Total Providers To Be Paid: " << total_pro << endl
+	            << "Total Consultations: " << total_consuls << endl
+	            << "Total Fee Due: $" << total_fee << endl;
+
 	output_file.close();
+
+	cout << "\nReport saved as \"" << file_out << "\"" << endl;
 	return true;
 }
 

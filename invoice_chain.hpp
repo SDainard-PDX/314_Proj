@@ -39,7 +39,8 @@ class Invoice_Chain
         bool remove_invoice(int invoice_number_to_remove);
         void display_all();
         bool write_out(std::string file_out);
-		bool person_report(std::string id, char type);
+		bool member_report(std::string id, People *memDS, People *proDS, Service_Directory *servDS);
+		bool provider_report(std::string id, People *proDS, People *memDS, Service_Directory *servDS);
 		bool acts_payable(People *proDS, Service_Directory *servDS);
 
         int getInvoiceCnt();

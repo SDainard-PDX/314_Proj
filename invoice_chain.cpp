@@ -257,8 +257,86 @@ bool Invoice_Chain::write_out(string file_out)
     return true;
 }
 
-bool Invoice_Chain::person_report(std::string id, char type)
+bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, Service_Directory *servDS)
 {
+	//TODO: throw error?
+	if(!mem_head)
+		return false;
+
+	Person *mem = memDS->find_person(id);
+
+	if(!mem) { //throw error
+		return false;
+	}
+
+	tm *curr_time = new tm;
+	time_t now = time(0);
+	curr_time = localtime(&now);
+
+	//TODO: specify path into separate reports folder
+	string file_out = "MemberLastMemberFirst" //TODO: make this say prov/memb name
+						  + to_string(curr_time->tm_mon + 1) + "-"
+						  + to_string(curr_time->tm_mday) + "-"
+						  + to_string(curr_time->tm_year + 1900) + ".txt";
+
+    ofstream output_file;
+	output_file.open(file_out);
+    if(!output_file.is_open()) return false; //throw error
+
+	output_file << "Member Name: " << mem->getName() << endl
+				<< "Member ID: #" << mem->getNumber() << endl
+				<< "Member Address:\n\t" << mem->getAddress() << endl
+				<< "\t" << mem->getCity() << ", " << mem->getState()
+				<< " " << mem->getZip() << "\n\nServices Received:" << endl;
+	
+	cout << "Member Name: " << mem->getName() << endl
+		 << "Member ID: #" << mem->getNumber() << endl
+		 << "Member Address:\n\t" << mem->getAddress() << endl
+		 << "\t" << mem->getCity() << ", " << mem->getState()
+		 << " " << mem->getZip() << "\n\nServices Received:" << endl;
+	
+	Invoice_ChainNode *curr_inv = mem_head;
+
+    while (curr_inv && curr_inv->invoice->getMemNum() != id) {
+        curr_inv = curr_inv->mem_next;
+    }
+
+	if(!curr_inv) {		//member has not received services
+		//do stuff
+		output_file << "\tMember has received no services for this period." << endl;
+		cout << "\tMember has received no services for this period." << endl;
+		return true;
+	}
+
+	while(curr_inv && curr_inv->invoice->getMemNum() == id) {
+//servicename with providder on date
+		Service_Item *serv = servDS->find_item(curr_inv->invoice->getSerNum());
+		Person *pro = proDS->find_person(curr_inv->invoice->getProNum());
+		tm *time = curr_inv->invoice->getServDate();
+
+		output_file << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
+					<< ((pro) ? pro->getName() : "Invalid provider") << " on "
+					<< (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
+					<< (time->tm_year + 1900) << "\n" << endl;
+
+		cout << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
+			 << ((pro) ? pro->getName() : "Invalid provider") << " on "
+			 << (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
+			 << (time->tm_year + 1900) << "\n" << endl;
+
+		curr_inv = curr_inv->mem_next;
+	}
+
+	return true;
+}
+
+bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS, Service_Directory *servDS)
+{
+	//TODO: throw error?
+	if(!pro_head)
+		return false;
+
+	Invoice_ChainNode *curr_inv = pro_head;
 }
 
 bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
@@ -295,8 +373,14 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	//while loop--go through providers,
 	while(curr_inv) {
 		if(pro_id != curr_inv->invoice->getProNum()) { //new provider
+			Person *pro = proDS->find_person(pro_id);
+
+			if(!pro) //invalid provider in session invoices
+				return false; //TODO: throw error
+
+			std::string pro_name = pro->getName();
+
 			//write out old provider's info
-			std::string pro_name = proDS->find_person(pro_id)->getName();
 			output_file << "\t" << pro_name << " #" << pro_id << endl
 						<< "\tTotal consultations: " << pro_consuls << endl
 						<< "\tFee due: $" << pro_fee << endl;
@@ -318,6 +402,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 			curr_inv = curr_inv->pro_next;
 			continue; //throw error too
 		}
+
 		double fee = serv->getFee();
 		total_fee += fee;
 		pro_fee += fee;

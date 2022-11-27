@@ -129,15 +129,16 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         cout << " 6 - Edit Service"     << endl;
         cout << "\tSame with this group" << endl;
 
-        cout << " 7 - Generate Summary Report for Member/Provider"   << endl;
-		cout << " 8 - Generate Report of Accounts Payable"           << endl;
+        cout << " 7 - Generate Summary Report for Member"   << endl;
+        cout << " 8 - Generate Summary Report for Provider" << endl;
+		cout << " 9 - Generate Report of Accounts Payable"  << endl;
 
         cout << endl;
-        cout << " 9 - Return to main menu"         << endl;
+        cout << " 10 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,9);
+        menu_choice = Choice(0,10);
 
         Divider();
         switch (menu_choice)
@@ -223,12 +224,30 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 else cout << "\n\t\tUnable to Edit selection" << endl;
                 break;
-			case 7:			//member/provider summary report
+			case 7:			//member summary report
+                cout << "\nEnter the id number of the member to generate a report for: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (VerifyPerson(memDS, entry_number, reply)) {
+						invoiceDS->member_report(entry_number, memDS, proDS, servDS);
+                    }
+                    else cout << "That member is not within the system." << endl;
+                }
 				break;
-			case 8: 		//accounts payable
+			case 8:			//provider summary report
+                cout << "\nEnter the id number of the provider to generate a report for: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (VerifyPerson(proDS, entry_number, reply)) {
+						invoiceDS->provider_report(entry_number, proDS, memDS, servDS);
+                    }
+                    else cout << "That provider is not within the system." << endl;
+                }
+				break;
+			case 9: 		//accounts payable
 				invoiceDS->acts_payable(proDS, servDS);	
 				break;
-            case 9: cout << "\t\tReturning to main menu" << endl;
+            case 10: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;

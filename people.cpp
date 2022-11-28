@@ -85,7 +85,11 @@ bool People::add_person(Person *toAdd)
         }
         if (!curr->next) { curr->next = newPerson; }
         else {
-            if(prev) prev->next = newPerson;
+            if(prev) { prev->next = newPerson; }
+			else {
+				head = newPerson;
+			}
+
             newPerson->next = curr;
         }
     }

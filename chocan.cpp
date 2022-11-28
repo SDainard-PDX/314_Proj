@@ -146,6 +146,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 cout << "\tWhat type of person: " << endl;
                 pick = Choice("mpc");
 
+				toAdd = new Person;
                 if(toAdd->create(pick)) {
                     if (pick == 'm') {
                         memDS->add_person(toAdd);

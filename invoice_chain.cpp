@@ -67,25 +67,25 @@ int Invoice_Chain::populate(const string& file_in)
         getline(in_file, subYr, ',');
         subTimeIn->tm_year = stoi(subYr);
         getline(in_file, subMo, ',');
-        subTimeIn->tm_year = stoi(subMo);
+        subTimeIn->tm_mon = stoi(subMo);
         getline(in_file, subDay, ',');
-        subTimeIn->tm_year = stoi(subDay);
+        subTimeIn->tm_mday = stoi(subDay);
         getline(in_file, subHr, ',');
-        subTimeIn->tm_year = stoi(subHr);
+        subTimeIn->tm_hour = stoi(subHr);
         getline(in_file, subMin, ',');
-        subTimeIn->tm_year = stoi(subMin);
+        subTimeIn->tm_min = stoi(subMin);
         getline(in_file, subSec, ',');
-        subTimeIn->tm_year = stoi(subSec);
+        subTimeIn->tm_sec = stoi(subSec);
         getline(in_file, servYr, ',');
-        subTimeIn->tm_year = stoi(servYr);
+        servDateIn->tm_year = stoi(servYr);
         getline(in_file, servMo, ',');
-        subTimeIn->tm_year = stoi(servMo);
+        servDateIn->tm_mon = stoi(servMo);
         getline(in_file, servDay, ',');
-        subTimeIn->tm_year = stoi(servDay);
+        servDateIn->tm_mday = stoi(servDay);
         getline(in_file, commIn);
 
         //create person to add
-        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, subTimeIn, servDateIn, commIn);
+        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, servDateIn, subTimeIn, commIn);
         toAdd->setInvNum(++invoice_count);
 
         //add the vehicle to the table & increment count

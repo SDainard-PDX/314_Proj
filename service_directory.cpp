@@ -80,7 +80,8 @@ bool Service_Directory::add_item(Service_Item *toAdd)
                 curr->next = newItem;
             }
         } else {
-            if (prev) prev->next = newItem;
+            if (prev) { prev->next = newItem; }
+			else { head = newItem; }
             newItem->next = curr;
         }
     }

@@ -1,5 +1,9 @@
 #include "invoice_chain.hpp"
 
+#define MEM_REPORTS_PATH "reports/members/"
+#define PRO_REPORTS_PATH "reports/providers/"
+#define ACC_REPORTS_PATH "reports/accounts/"
+
 using namespace std;
 
 Invoice_ChainNode::Invoice_ChainNode():invoice(nullptr), mem_next(nullptr), pro_next(nullptr),
@@ -274,7 +278,7 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	curr_time = localtime(&now);
 
 	//TODO: specify path into separate reports folder
-	string file_out = "MemberLastMemberFirst" //TODO: make this say prov/memb name
+	string file_out = string(MEM_REPORTS_PATH) + "MemberLastMemberFirst" //TODO: make this say prov/memb name
 						  + to_string(curr_time->tm_mon + 1) + "-"
 						  + to_string(curr_time->tm_mday) + "-"
 						  + to_string(curr_time->tm_year + 1900) + ".txt";
@@ -358,7 +362,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	curr_time = localtime(&now);
 
 	//TODO: specify path into separate reports folder
-	std::string file_out = "AccountsPayable"
+	std::string file_out = string(ACC_REPORTS_PATH) + "AccountsPayable"
 						  + std::to_string(curr_time->tm_mon + 1) + "-"
 						  + std::to_string(curr_time->tm_mday) + "-"
 						  + std::to_string(curr_time->tm_year + 1900) + ".txt";

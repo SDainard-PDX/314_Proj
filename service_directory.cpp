@@ -137,6 +137,7 @@ void Service_Directory::display_all()
     while (curr) {
         curr->item->display();
         cout << endl;
+		curr = curr->next;
     }
 }
 

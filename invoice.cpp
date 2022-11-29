@@ -7,9 +7,9 @@ Session_Invoice::Session_Invoice(): invoice_num(-1), serv_code("-1"),
                 pro_num("-1"), mem_num("-1"), comments("none") {}
 
 Session_Invoice::Session_Invoice(string servNumIn, string proNumIn,
-                    string memNumIn, tm *servDateIn, tm *subTimeIn, string commIn):
+                    string memNumIn, tm *subTimeIn, tm *servDateIn, string commIn):
         invoice_num(-1), serv_code(servNumIn), pro_num(proNumIn), mem_num(memNumIn),
-                serv_date(servDateIn), sub_time(subTimeIn), comments("none") {}
+                sub_time(subTimeIn), serv_date(servDateIn), comments(commIn) {}
 
 Session_Invoice::~Session_Invoice()
 {

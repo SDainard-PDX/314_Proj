@@ -31,15 +31,12 @@ int main()
         Divider();
         cout << " 1 - Use the Manager Terminal"         << endl;
         cout << " 2 - Use the Provider Terminal"        << endl;
-        cout << " 3 - Display all Providers"            << endl;
-        cout << " 4 - Display all Members"              << endl;
-        cout << " 5 - Display all Managers"             << endl;
-        cout << " 6 - Display Service Directory"        << endl;
+        cout << " 3 - Display Service Directory"        << endl;
         cout << endl;
         cout << " 0 - Quit and exit"                    << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,6);
+        menu_choice = Choice(0,3);
 
         Divider();
         switch (menu_choice)
@@ -65,18 +62,6 @@ int main()
                 }
                 break;
             case 3:
-                cout << endl;
-                proDS->display_all();
-                break;
-            case 4:
-                cout << endl;
-                memDS->display_all();
-                break;
-            case 5:
-                cout << endl;
-                manDS->display_all();
-                break;
-            case 6:
                 cout << endl;
                 servDS->display_all();
                 break;
@@ -122,28 +107,27 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         cout << " 1 - Add Member / Provider / Manager"       << endl;
         cout << " 2 - Remove Member / Provider / Manager"    << endl;
         cout << " 3 - Edit Member / Provider / Manager"      << endl;//TODO
-        cout << "\tThese will likely get dropped into a separate menu" << endl;
-
-        cout << " 4 - Add Service"      << endl;
-        cout << " 5 - Remove Service"   << endl;
-        cout << " 6 - Edit Service"     << endl;
+        cout << " 4 - View All Members / Providers / Managers" << endl;
+        cout << " 5 - Add Service"      << endl;
+        cout << " 6 - Remove Service"   << endl;
+        cout << " 7 - Edit Service"     << endl;
         cout << "\tSame with this group" << endl;
 
-        cout << "Still need:\n\t 7 - ind report mem/pro\n\t8 - all reports" << endl;
+        cout << "Still need:\n\t 9 - ind report mem/pro\n\t10 - all reports" << endl;
 
         cout << endl;
-        cout << " 7 - Return to main menu"         << endl;
+        cout << " 8 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,7);
+        menu_choice = Choice(0,8);
 
         Divider();
         switch (menu_choice)
         {
             case 1:
                 cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person: ";
+                cout << "\tWhat type of person to add: ";
                 pick = Choice("mpc");
 
 				toAdd = new Person;
@@ -167,7 +151,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 
             case 2:
                 cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person: ";
+                cout << "\tWhat type of person to remove: ";
                 pick = Choice("mpc");
 
                 cout << "\nEnter the id number of person to remove: ";
@@ -198,6 +182,25 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
             case 3: cout << "\t\tEdit Person Selected, will do later" << endl;
                 break;
             case 4:
+                cout << "\n\t member = M provider = P manager = C" << endl;
+                cout << "\tWhat type of person to view: ";
+                pick = Choice("mpc");
+                if (pick == 'm') {
+                    cout << endl;
+                    memDS->display_all();
+                    break;
+                }
+                if (pick == 'p') {
+                    cout << endl;
+                    proDS->display_all();
+                    break;
+                }
+                if (pick == 'c') {
+                    cout << endl;
+                    manDS->display_all();
+                    break;
+                }
+            case 5:
                 cout << "\tAdding a service" << endl;
 				add_item = new Service_Item;
                 if (add_item->create()) {
@@ -207,7 +210,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 else cout << "\n\t\tUnable to Add selection" << endl;
                 break;
-            case 5:
+            case 6:
                 cout << "\nEnter the id number of service to remove: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
@@ -217,7 +220,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 else cout << "\n\t\tUnable to Remove selection" << endl;
                 break;
-            case 6:
+            case 7:
                 cout << "\nEnter the id number of service to edit: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
@@ -228,7 +231,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 else cout << "\n\t\tUnable to Edit selection" << endl;
                 break;
 
-            case 7: cout << "\t\tReturning to main menu" << endl;
+            case 8: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;
@@ -237,7 +240,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         }
 
         Wait4Enter();
-    } while (menu_choice != 0 && menu_choice != 7);
+    } while (menu_choice != 0 && menu_choice != 8);
     Divider();
     return menu_choice;
 }

@@ -46,36 +46,37 @@ int Invoice_Chain::populate(const string& file_in)
 
     //temp variables for input
     string  servNumIn = {0}, proNumIn = {0}, memNumIn = {0}, commIn = {0};
-    tm *subTimeIn = new tm, *servDateIn = new tm;
     string subYr, subMo, subDay, subHr, subMin, subSec, servYr, servMo, servDay;
     int count = 0;  //temp variable to return invoices input
     invoice_count = 0;
-    *subTimeIn = {0}, *servDateIn = {0};
 
     //loop over input until EOF
     while(getline(in_file, servNumIn, ','))
     {
+        tm *subTimeIn = new tm, *servDateIn = new tm;
+        *subTimeIn = {0}, *servDateIn = {0};
+
         //get temp values from file
         getline(in_file, proNumIn, ',');
         getline(in_file, memNumIn, ',');
         getline(in_file, subYr, ',');
         subTimeIn->tm_year = stoi(subYr);
         getline(in_file, subMo, ',');
-        subTimeIn->tm_year = stoi(subMo);
+        subTimeIn->tm_mon = stoi(subMo);
         getline(in_file, subDay, ',');
-        subTimeIn->tm_year = stoi(subDay);
+        subTimeIn->tm_mday = stoi(subDay);
         getline(in_file, subHr, ',');
-        subTimeIn->tm_year = stoi(subHr);
+        subTimeIn->tm_hour = stoi(subHr);
         getline(in_file, subMin, ',');
-        subTimeIn->tm_year = stoi(subMin);
+        subTimeIn->tm_min = stoi(subMin);
         getline(in_file, subSec, ',');
-        subTimeIn->tm_year = stoi(subSec);
+        subTimeIn->tm_sec = stoi(subSec);
         getline(in_file, servYr, ',');
-        subTimeIn->tm_year = stoi(servYr);
+        servDateIn->tm_year = stoi(servYr);
         getline(in_file, servMo, ',');
-        subTimeIn->tm_year = stoi(servMo);
+        servDateIn->tm_mon = stoi(servMo);
         getline(in_file, servDay, ',');
-        subTimeIn->tm_year = stoi(servDay);
+        servDateIn->tm_mday = stoi(servDay);
         getline(in_file, commIn);
 
         //create person to add
@@ -94,23 +95,31 @@ int Invoice_Chain::populate(const string& file_in)
 
 bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
 {
-    Invoice_ChainNode *newinvoice = new Invoice_ChainNode(toAdd);
+    if (!toAdd) { return false; }
+    Invoice_ChainNode *newInvoice = new Invoice_ChainNode(toAdd);
     Invoice_ChainNode *curr = inv_num_head, *prev = nullptr;
 
-    if (!toAdd) { return false; }
+    if (toAdd->getInvNum() == 0) {
+        int addNum = 1;
+        while (curr) {
+            addNum = curr->invoice->getInvNum();
+            curr = curr->inv_num_next;
+        }
+        newInvoice->invoice->setInvNum(++addNum);
+    }
 
 //this first bit is good for both since if one empty the other empty
     if (!pro_head && !mem_head && !inv_num_head) {
-        pro_head = newinvoice;
-        mem_head = newinvoice;
-        inv_num_head = newinvoice;
+        pro_head = newInvoice;
+        mem_head = newInvoice;
+        inv_num_head = newInvoice;
     }
     else {
 //first run it for inv_num
         while (toAdd->getInvNum() >= curr->invoice->getInvNum() && curr->inv_num_next) {
             if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
                 cout << "\n\tCannot add new invoice, id number already exists." << endl;
-                delete newinvoice;
+                delete newInvoice;
                 return false;
             }
             prev = curr;
@@ -118,15 +127,15 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
         }
         if (!curr->inv_num_next) {
             if (curr == inv_num_head) {
-                inv_num_head = newinvoice;
-                newinvoice->inv_num_next = curr;
+                inv_num_head = newInvoice;
+                newInvoice->inv_num_next = curr;
             } else {
-                curr->inv_num_next = newinvoice;
+                curr->inv_num_next = newInvoice;
             }
         }
         else {
-            if(prev) prev->inv_num_next = newinvoice;
-            newinvoice->inv_num_next = curr;
+            if(prev) prev->inv_num_next = newInvoice;
+            newInvoice->inv_num_next = curr;
         }
 //second run through to place in providers chain
         curr = pro_head;
@@ -137,15 +146,15 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
         }
         if (!curr->pro_next) {
             if (curr == pro_head) {
-                pro_head = newinvoice;
-                newinvoice->pro_next = curr;
+                pro_head = newInvoice;
+                newInvoice->pro_next = curr;
             } else {
-            curr->pro_next = newinvoice;
+            curr->pro_next = newInvoice;
             }
         }
         else {
-            if(prev) prev->pro_next = newinvoice;
-            newinvoice->pro_next = curr;
+            if(prev) prev->pro_next = newInvoice;
+            newInvoice->pro_next = curr;
         }
 //lastly the process for members chain
         curr = mem_head;
@@ -156,15 +165,15 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
         }
         if (!curr->mem_next) {
             if (curr == mem_head) {
-                mem_head = newinvoice;
-                newinvoice->mem_next = curr;
+                mem_head = newInvoice;
+                newInvoice->mem_next = curr;
             } else {
-                curr->mem_next = newinvoice;
+                curr->mem_next = newInvoice;
             }
         }
         else {
-            if(prev) prev->mem_next = newinvoice;
-            newinvoice->mem_next = curr;
+            if(prev) prev->mem_next = newInvoice;
+            newInvoice->mem_next = curr;
         }
     }
     return true;
@@ -243,13 +252,13 @@ bool Invoice_Chain::write_out(string file_out)
     Invoice_ChainNode *curr = inv_num_head;
     while(curr) {
         Session_Invoice *temp = curr->invoice;
-        tm *subtime = temp->getSubTime();
-        tm *servdate = temp->getServDate();
+        tm *subTime = temp->getSubTime();
+        tm *servDate = temp->getServDate();
 
         output_file << temp->getSerNum() << "," << temp->getProNum() << "," << temp->getMemNum() << ","
-                << subtime->tm_year << "," << subtime->tm_mon << ","<< subtime->tm_mday << ","
-                << subtime->tm_hour << "," << subtime->tm_min << ","<< subtime->tm_sec << ","
-                << servdate->tm_year << ","<< servdate->tm_mon << ","<< servdate->tm_mday << ","
+                    << subTime->tm_year << "," << subTime->tm_mon << "," << subTime->tm_mday << ","
+                    << subTime->tm_hour << "," << subTime->tm_min << "," << subTime->tm_sec << ","
+                    << servDate->tm_year << "," << servDate->tm_mon << "," << servDate->tm_mday << ","
                 << temp->getComments() << endl;
 
         curr = curr->inv_num_next;

@@ -30,7 +30,7 @@ char Choice(string options)
 
     getline(cin, c);
     ci = tolower(c[0]);
-    for(int i = 0; i < (int)(c.length()); i++) {
+    for(int i = 0; i < (int)(options.length()); i++) {
         if (ci == tolower(options[i])) { return ci; }
     }
 

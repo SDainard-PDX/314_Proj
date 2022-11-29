@@ -42,7 +42,7 @@ class Session_Invoice
         std::string serv_code;
         std::string pro_num;
         std::string mem_num;
-        tm          *serv_date;
         tm          *sub_time;
+        tm          *serv_date;
         std::string comments;
 };

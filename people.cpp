@@ -74,10 +74,11 @@ bool People::add_person(Person *toAdd)
 
     if (!head) { head = newPerson; }
     else {
-        while (toAdd->getNumber() > curr->person->getNumber() && curr->next) {
+        while (toAdd->getNumber() >= curr->person->getNumber() && curr->next) {
             //ensures not adding a number that exists
             if ( toAdd->getNumber() == curr->person->getNumber() ) {
-                cout << "\n\tCannot add new person, id number already exists.\n" << endl;
+                cout << "\n\tCannot add new person, id number already exists." << endl;
+                delete newPerson;
                 return false;
             }
             prev = curr;

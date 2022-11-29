@@ -67,8 +67,11 @@ bool Service_Directory::add_item(Service_Item *toAdd)
 
     if (!head) { head = newItem; }
     else {
-        while (toAdd->getName() > curr->item->getName() && curr->next) {
-            if (toAdd->getNum() == curr->item->getNum()) { return false; }
+        while (toAdd->getName() >= curr->item->getName() && curr->next) {
+            if (toAdd->getNum() == curr->item->getNum()) {
+                cout << "\n\tCannot add new service, id number already exists." << endl;
+                return false;
+            }
             prev = curr;
             curr = curr->next;
         }

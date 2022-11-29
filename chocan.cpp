@@ -143,28 +143,31 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         {
             case 1:
                 cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person: " << endl;
+                cout << "\tWhat type of person: ";
                 pick = Choice("mpc");
 
 				toAdd = new Person;
                 if(toAdd->create(pick)) {
                     if (pick == 'm') {
-                        memDS->add_person(toAdd);
-                        cout << "\nAdded person to Members" << endl;
+                        if (memDS->add_person(toAdd)) {
+                            cout << "\nAdded person to Members" << endl; }
                     } else if (pick == 'p') {
-                        proDS->add_person(toAdd);
-                        cout << "\nAdded person to Providers" << endl;
+                        if (proDS->add_person(toAdd)) {
+                        cout << "\nAdded person to Providers" << endl; }
                     } else if (pick == 'c') {
-                        manDS->add_person(toAdd);
-                        cout << "\nAdded person to Managers" << endl;
+                        if (manDS->add_person(toAdd)) {
+                        cout << "\nAdded person to Managers" << endl; }
                     }
                 }
-                else cout << "\t\tUnable to Add selection" << endl;
+                else {
+                    cout << "\t\tUnable to Add selection" << endl;
+                    delete toAdd;
+                }
                 break;
 
             case 2:
                 cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person: " << endl;
+                cout << "\tWhat type of person: ";
                 pick = Choice("mpc");
 
                 cout << "\nEnter the id number of person to remove: ";

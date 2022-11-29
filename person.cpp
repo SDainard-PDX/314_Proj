@@ -15,9 +15,8 @@ Person::Person(string numberIn, string nameIn, string addressIn, string cityIn,
                 number(numberIn), name(std::move(nameIn)), address(std::move(addressIn)),city(std::move(cityIn)),
                 state(std::move(stateIn)), zip(zipIn), status(std::move(statusIn)), type(typeIn) {}
 
-Person * Person::create(char type_code){
+bool Person::create(char type_code){
     errstruc ERS;
-    Person *newPerson = nullptr;
 
     try
     {
@@ -47,7 +46,14 @@ Person * Person::create(char type_code){
 
         type = type_code;
 
-        newPerson = new Person(number, name, address, city, state, zip, "Valid", type);
+        this->number = number;
+        this->name = name;
+        this->address = address;
+        this->city = city;
+        this->state = state;
+        this->zip = zip;
+        this->status = "Valid";
+        this->type = type;
     }
     catch (char E) {
         if (E == 'I')  ERS.gen("Id number isn't 9 digits.");
@@ -57,9 +63,9 @@ Person * Person::create(char type_code){
         if (E == 'S')  ERS.genIntMax("State", 2);
         if (E == 'Z')  ERS.gen("Zip code isn't 5 digits.");
 
-        return nullptr;
+        return false;
     }
-    return newPerson;
+    return true;
 }
 
 bool Person::edit()

@@ -17,8 +17,6 @@ Invoice_ChainNode::~Invoice_ChainNode()
     inv_num_next = nullptr;
     pro_prev = nullptr;
     mem_prev = nullptr;
-//    delete pro_next;
-//    delete mem_next;
 }
 
 Invoice_Chain::Invoice_Chain(): mem_head(nullptr), pro_head(nullptr), inv_num_head(nullptr) {}
@@ -109,8 +107,12 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
     }
     else {
 //first run it for inv_num
-        while (toAdd->getInvNum() > curr->invoice->getInvNum() && curr->inv_num_next) {
-            if (toAdd->getInvNum() == curr->invoice->getInvNum()) { return false; }
+        while (toAdd->getInvNum() >= curr->invoice->getInvNum() && curr->inv_num_next) {
+            if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
+                cout << "\n\tCannot add new invoice, id number already exists." << endl;
+                delete newinvoice;
+                return false;
+            }
             prev = curr;
             curr = curr->inv_num_next;
         }

@@ -199,8 +199,9 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 break;
             case 4:
                 cout << "\tAdding a service" << endl;
+				add_item = new Service_Item;
                 if (add_item->create()) {
-                    if( servDS->add_item(add_item)) {
+                    if(servDS->add_item(add_item)) {
                         cout << "\nAdded Service to Directory" << endl;
                     }
                 }

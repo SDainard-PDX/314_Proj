@@ -5,6 +5,7 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
 
 /*
 */
@@ -29,7 +30,7 @@ class People
         int populate(const std::string& file_in, char type_in);
         bool add_person(Person *to_add);
         Person * find_person(std::string num_to_find);
-        bool edit_item(std::string num_to_edit);
+        bool edit_person(std::string num_to_edit);
         bool remove_person(std::string num_to_remove);
         void display_all();
         bool write_out(std::string file_out);

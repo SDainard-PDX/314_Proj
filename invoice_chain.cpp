@@ -84,7 +84,7 @@ int Invoice_Chain::populate(const string& file_in)
         getline(in_file, commIn);
 
         //create person to add
-        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, servDateIn, subTimeIn, commIn);
+        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, subTimeIn, servDateIn, commIn);
         toAdd->setInvNum(++invoice_count);
 
         //add the vehicle to the table & increment count
@@ -259,11 +259,13 @@ bool Invoice_Chain::write_out(string file_out)
         tm *subTime = temp->getSubTime();
         tm *servDate = temp->getServDate();
 
-        output_file << temp->getSerNum() << "," << temp->getProNum() << "," << temp->getMemNum() << ","
-                    << subTime->tm_year << "," << subTime->tm_mon << "," << subTime->tm_mday << ","
-                    << subTime->tm_hour << "," << subTime->tm_min << "," << subTime->tm_sec << ","
-                    << servDate->tm_year << "," << servDate->tm_mon << "," << servDate->tm_mday << ","
-                << temp->getComments() << endl;
+        output_file << setfill('0') << setw(9)
+            << temp->getSerNum() << "," << temp->getProNum() << "," << temp->getMemNum() << ","
+            << setw(0)
+            << subTime->tm_year << "," << subTime->tm_mon << "," << subTime->tm_mday << ","
+            << subTime->tm_hour << "," << subTime->tm_min << "," << subTime->tm_sec << ","
+            << servDate->tm_year << "," << servDate->tm_mon << "," << servDate->tm_mday << ","
+            << temp->getComments() << endl;
 
         curr = curr->inv_num_next;
     }
@@ -328,14 +330,18 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		tm *time = curr_inv->invoice->getServDate();
 
 		output_file << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
-					<< ((pro) ? pro->getName() : "Invalid provider") << " on "
-					<< (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
-					<< (time->tm_year + 1900) << "\n" << endl;
+					<< ((pro) ? pro->getName() : "Invalid provider") << " on ";
+        if (time->tm_mon < 9) { output_file << '0'; }
+        output_file << (time->tm_mon + 1) << "-";
+        if (time->tm_mday < 10) { output_file << '0'; }
+        output_file << (time->tm_mday) << "-" << (time->tm_year + 1900) << "\n" << endl;
 
 		cout << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
-			 << ((pro) ? pro->getName() : "Invalid provider") << " on "
-			 << (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
-			 << (time->tm_year + 1900) << "\n" << endl;
+			 << ((pro) ? pro->getName() : "Invalid provider") << " on ";
+        if (time->tm_mon < 9) { output_file << '0'; }
+        cout << (time->tm_mon + 1) << "-";
+        if (time->tm_mday < 10) { output_file << '0'; }
+        cout << (time->tm_mday) << "-" << (time->tm_year + 1900) << "\n" << endl;
 
 		curr_inv = curr_inv->mem_next;
 	}
@@ -399,22 +405,43 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 		tm *sub_time = curr_inv->invoice->getSubTime();
 
 		output_file << "\t" << "Service #" << curr_inv->invoice->getSerNum() << " provided to "
-					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on "
-					<< (ser_time->tm_mon) << "-" << (ser_time->tm_mday) << "-"
-					<< (ser_time->tm_year) << "\tRecorded on "
-					<< (sub_time->tm_mon + 1) << "-" << (sub_time->tm_mday) << "-"
-					<< (sub_time->tm_year + 1900) << " " << (sub_time->tm_hour) << ":"
-					<< (sub_time->tm_min) << ":" << (sub_time->tm_sec) << "\n\tFee due: "
+					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
+        if (ser_time->tm_mon < 9) { output_file << '0'; }
+        output_file << (ser_time->tm_mon + 1) << "-";
+        if (ser_time->tm_mday < 10) { output_file << '0'; }
+        output_file << (ser_time->tm_mday) << "-"
+					<< (ser_time->tm_year + 1900) << "\tRecorded on ";
+        if (sub_time->tm_mon < 9) { output_file << '0'; }
+        output_file << (sub_time->tm_mon + 1) << "-";
+        if (sub_time->tm_mday < 10) { output_file << '0'; }
+        output_file << (sub_time->tm_mday) << "-"
+					<< (sub_time->tm_year + 1900) << " ";
+        if (sub_time->tm_hour < 10) { output_file << '0'; }
+        output_file << (sub_time->tm_hour) << ":";
+        if (sub_time->tm_min < 10) { output_file << '0'; }
+        output_file << (sub_time->tm_min) << ":";
+        if (sub_time->tm_sec < 10) { output_file << '0'; }
+        output_file << (sub_time->tm_sec) << "\n\tFee due: "
 					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
 		cout << "\t" << "Service #" << curr_inv->invoice->getSerNum() <<" provided to "
-					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on "
-					<< (ser_time->tm_mon) << "-" << (ser_time->tm_mday) << "-"
-					<< (ser_time->tm_year) << "\tRecorded on " 
-					<< (sub_time->tm_mon + 1) << "-" << (sub_time->tm_mday) << "-"
-					<< (sub_time->tm_year + 1900) << " " << (sub_time->tm_hour) << ":"
-					<< (sub_time->tm_min) << ":" << (sub_time->tm_sec) << "\n\tFee due: "
-					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
+					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
+        if (ser_time->tm_mon < 9) { output_file << '0'; }
+        cout << (ser_time->tm_mon + 1) << "-";
+        if (ser_time->tm_mday < 10) { output_file << '0'; }
+        cout << (ser_time->tm_mday) << "-";
+        cout << (ser_time->tm_year + 1900) << "\tRecorded on ";
+        if (sub_time->tm_mon < 9) { output_file << '0'; }
+        cout << (sub_time->tm_mon + 1) << "-";
+        if (sub_time->tm_mday < 10) { output_file << '0'; }
+        cout << (sub_time->tm_mday) << "-" << (sub_time->tm_year + 1900);
+        if (sub_time->tm_hour < 10) { output_file << '0'; }
+        cout << " " << (sub_time->tm_hour) << ":";
+        if (sub_time->tm_min < 10) { output_file << '0'; }
+        cout << (sub_time->tm_min) << ":";
+        if (sub_time->tm_sec < 10) { output_file << '0'; }
+        cout << (sub_time->tm_sec) << "\n\tFee due: "
+            << ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
 		curr_inv = curr_inv->pro_next;
 	}

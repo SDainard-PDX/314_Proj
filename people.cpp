@@ -97,7 +97,7 @@ bool People::add_person(Person *toAdd)
     return true;
 }
 
-bool People::edit_item(std::string edit)
+bool People::edit_person(std::string edit)
 {
     if(!head) {return false; }
     Person *temp = find_person(edit);
@@ -156,8 +156,12 @@ bool People::write_out(string file_out)
     PeopleNode *curr = head;
     while(curr) {
         Person *temp = curr->person;
-        output_file << temp->getNumber() << "," << temp->getName() << "," << temp->getAddress()
-            << "," << temp->getCity() << "," << temp->getState() << "," << temp->getZip() << ","
+        output_file << setfill('0') << setw(9)
+            << temp->getNumber()
+                << setw(0)
+            << "," << temp->getName() << "," << temp->getAddress()
+            << "," << temp->getCity() << "," << temp->getState() << ","
+                << setw(5) << temp->getZip() << "," << setw(0)
             << temp->getStatus() << endl;
         curr = curr->next;
     }

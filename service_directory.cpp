@@ -151,7 +151,9 @@ bool Service_Directory::write_out(string file_out)
     Service_DirectoryNode *curr = head;
     while(curr) {
         Service_Item *temp = curr->item;
-        output_file << temp->getName() << "," << temp->getNum() << "," << temp->getFee() << endl;
+        output_file << temp->getName() << ","
+                << setfill('0') << setw(6) << temp->getNum()
+                << setw(0) << "," << temp->getFee() << endl;
         curr = curr->next;
     }
 

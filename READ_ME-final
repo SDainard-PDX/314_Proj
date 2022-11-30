@@ -1,0 +1,31 @@
+Hello and welcome to our Chocan simulator;
+
+We have included a makefile plus all of the required files to run the simulator.
+Including sample CSV files.
+ 
+Make includes make (all) and make clean, as well as others.
+ 
+As a general rule anything that requires an id will accept either the correct
+number of 0's or a count-up. (ie: 000000000 or 123456789) and find relevant info.
+On the other hand all 5's (ie: 555555555 or 555555) is specifically not included
+in the sample data sets to allow 'good' entry with no result testing.
+
+The CSV files have been set to read-in from one file and write-out to another, 
+for testing purposes to all easy comparision of the two.  The titles can be found
+as macros in the chocan.hpp file. 
+
+For testing purposes, a directory is included labeled Testing. It contains the 
+testing files which are set up to link up one level to this directory.  
+In it are already compiled testing program modules for the seperate modules of the simulator.
+### If I get around to writing a make for them it might not but 1st things 1st. ###
+Each can be run on it's own or their is also an included bash scripts which
+can be used to run various test sets.
+
+As an added bonus just for fun there is a directory containing a small program used
+to generate test data for the different people groups.
+
+We hope you enjoy it, while it's a small program we worked hard to capture the
+true essence of what it is meant to repersent.
+
+VR/
+Nevada Kavadia ###spelling?###

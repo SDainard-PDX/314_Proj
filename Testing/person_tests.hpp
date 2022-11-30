@@ -1,7 +1,5 @@
 #include "../person.hpp"
 
-using namespace std;
-
 void person_getNumber_test();
 void person_getName_test();
 void person_getAddress_test();
@@ -24,19 +22,27 @@ void person_number_compare_test();
 
 void person_getNumber_test()
 {
-	int test_number = 123456789;
-	person test_person(test_number, Matthew, "123 SE 1st St"
-					   "Portland", "OR", 97229, "valid");
+	std::string test_number = "123456789";
+	std::string test_name = "Matt";
+	std::string test_address = "123 SE 1st St";
+	std::string test_city = "Portland";
+	std::string test_state = "OR";
+	std::string test_zip = "97229";
+	char test_status = 'i';
+	Person * test_person;
 
-	cout << "getNumber() test. Expecting 123456789, got ";
-	cout << test_person.getNumber();
-	if(test_number == test_person.geNumber())
+	test_person = new Person(test_number, test_name, test_address, test_city, 
+					   test_state, test_zip, test_status);
+
+	std::cout << "getNumber() test. Expecting 123456789, got ";
+	std::cout << test_person->getNumber();
+	if(test_number == test_person->getNumber())
 	{
-		cout << ". Success." << endl;
+		std::cout << ". Success." << std::endl;
 	}
 	else
 	{
-		cout << ". Failure!" << endl;
+		std::cout << ". Failure!" << std::endl;
 	}
 }
 

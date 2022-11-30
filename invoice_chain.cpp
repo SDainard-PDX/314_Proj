@@ -327,6 +327,7 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	if(!curr_inv) {		//member has not received services
 		output_file << "\tMember has received no services for this period." << endl;
 		cout << "\tMember has received no services for this period." << endl;
+		cout << "\nReport saved to \"" << file_out << "\"" << endl;
 		return true;
 	}
 
@@ -347,6 +348,8 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 
 		curr_inv = curr_inv->mem_next;
 	}
+
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
 
 	return true;
 }
@@ -405,6 +408,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 	if(!curr_inv) {		//provider has not provided services
 		output_file << "\tProvider has provided no services for this period." << endl;
 		cout << "\tProvider has provided no services for this period." << endl;
+		cout << "\nReport saved to \"" << file_out << "\"" << endl;
 		return true;
 	}
 
@@ -434,6 +438,8 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 
 		curr_inv = curr_inv->pro_next;
 	}
+
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
 
 	return true;
 }
@@ -523,7 +529,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 
 	output_file.close();
 
-	cout << "\nReport saved as \"" << file_out << "\"" << endl;
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
 	return true;
 }
 

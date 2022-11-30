@@ -1,6 +1,8 @@
 #pragma once
 
 #include "invoice.hpp"
+#include "service_directory.hpp"
+#include "people.hpp"
 
 #include <string>
 #include <iostream>
@@ -37,6 +39,9 @@ class Invoice_Chain
         bool remove_invoice(int invoice_number_to_remove);
         void display_all();
         bool write_out(std::string file_out);
+		bool member_report(std::string id, People *memDS, People *proDS, Service_Directory *servDS);
+		bool provider_report(std::string id, People *proDS, People *memDS, Service_Directory *servDS);
+		bool acts_payable(People *proDS, Service_Directory *servDS);
 
         int getInvoiceCnt();
 

@@ -24,7 +24,7 @@ bool VerifyPerson(People *pool, std::string number, std::string &reply);
 
 //Managers Menu
 int
-Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS);
+Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS, Invoice_Chain *invoiceDS);
 
 //Providers Menu
 int

@@ -46,7 +46,7 @@ int main()
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(manDS, entry_number, reply)) {
-                        menu_choice = Menu2(manDS, proDS, memDS, servDS);
+                        menu_choice = Menu2(manDS, proDS, memDS, servDS, invoiceDS);
                     }//goto menu 2
                     else { cout << "No match returning to main menu." << endl;}
                 }
@@ -90,7 +90,7 @@ int main()
 }
 
 //Managers Menu
-int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS)
+int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS, Invoice_Chain *invoiceDS)
 {
     int menu_choice;
     string entry_number, reply;
@@ -111,16 +111,17 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         cout << " 5 - Add Service"      << endl;
         cout << " 6 - Remove Service"   << endl;
         cout << " 7 - Edit Service"     << endl;
-        cout << "\tSame with this group" << endl;
 
-        cout << "Still need:\n\t 9 - ind report mem/pro\n\t10 - all reports" << endl;
+        cout << " 8 - Generate Summary Report for Member"   << endl;
+        cout << " 9 - Generate Summary Report for Provider" << endl;
+		cout << "10 - Generate Report of Accounts Payable"  << endl;
 
         cout << endl;
-        cout << " 8 - Return to main menu"         << endl;
+        cout << " 11 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
-        menu_choice = Choice(0,8);
+        menu_choice = Choice(0,11);
 
         Divider();
         switch (menu_choice)
@@ -231,7 +232,30 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 else cout << "\n\t\tUnable to Edit selection" << endl;
                 break;
 
-            case 8: cout << "\t\tReturning to main menu" << endl;
+			case 8:			//member summary report
+                cout << "\nEnter the id number of the member to generate a report for: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (VerifyPerson(memDS, entry_number, reply)) {
+						invoiceDS->member_report(entry_number, memDS, proDS, servDS);
+                    }
+                    else cout << "That member is not within the system." << endl;
+                }
+				break;
+			case 9:			//provider summary report
+                cout << "\nEnter the id number of the provider to generate a report for: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (VerifyPerson(proDS, entry_number, reply)) {
+						invoiceDS->provider_report(entry_number, proDS, memDS, servDS);
+                    }
+                    else cout << "That provider is not within the system." << endl;
+                }
+				break;
+			case 10: 		//accounts payable
+				invoiceDS->acts_payable(proDS, servDS);	
+				break;
+            case 11: cout << "\t\tReturning to main menu" << endl;
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;

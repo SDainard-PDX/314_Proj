@@ -23,7 +23,7 @@ class Session_Invoice
                 struct tm *subTimeIn,
                 struct tm *servDateIn,
                 std::string commIn);
-        Session_Invoice * create(std::string pro);
+        bool create(std::string pro);
         bool edit();
         void display() const;
 

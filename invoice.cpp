@@ -17,8 +17,10 @@ Session_Invoice::~Session_Invoice()
     delete sub_time;
 }
 
-Session_Invoice * Session_Invoice::create(string pro){
+bool Session_Invoice::create(string pro){
     errstruc ERS;
+
+    if (pro == "") { return false; }
 
     try
     {
@@ -73,9 +75,9 @@ Session_Invoice * Session_Invoice::create(string pro){
         if (E == 'S')  ERS.genIntMax("Service Number", 6);
         if (E == 'C')  ERS.genIntMax("Comments", 100);
 
-        return nullptr;
+        return false;
     }
-    return this;
+    return true;
 }
 
 bool Session_Invoice::edit()

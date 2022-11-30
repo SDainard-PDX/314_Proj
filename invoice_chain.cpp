@@ -120,6 +120,22 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
     }
     else {
 //first run it for inv_num
+		curr = inv_num_head;
+        while (curr && toAdd->getInvNum() >= curr->invoice->getInvNum()) {
+            if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
+                cout << "\n\tCannot add new invoice, id number already exists." << endl;
+                return false;
+            }
+            prev = curr;
+            curr = curr->inv_num_next;
+        }
+		
+		if(prev) { prev->inv_num_next = newInvoice; }
+		else { inv_num_head = newInvoice; }
+
+		if(curr) { newInvoice->inv_num_next = curr; }
+
+		/*
         while (toAdd->getInvNum() >= curr->invoice->getInvNum() && curr->inv_num_next) {
             if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
                 cout << "\n\tCannot add new invoice, id number already exists." << endl;
@@ -129,7 +145,7 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             prev = curr;
             curr = curr->inv_num_next;
         }
-        if (!curr->inv_num_next) {
+        if (!curr->inv_num_next) { //at end of list
             if (curr == inv_num_head) {
                 inv_num_head = newInvoice;
                 newInvoice->inv_num_next = curr;
@@ -141,9 +157,21 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->inv_num_next = newInvoice;
             newInvoice->inv_num_next = curr;
         }
+		*/
 //second run through to place in providers chain
         curr = pro_head;
         prev = nullptr;
+
+        while (curr && toAdd->getProNum() > curr->invoice->getProNum()) {
+            prev = curr;
+            curr = curr->pro_next;
+        }
+		
+		if(prev) { prev->pro_next = newInvoice; }
+		else { pro_head = newInvoice; }
+
+		if(curr) { newInvoice->pro_next = curr; }
+		/*
         while (toAdd->getProNum() > curr->invoice->getProNum() && curr->pro_next) {
             prev = curr;
             curr = curr->pro_next;
@@ -160,9 +188,21 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->pro_next = newInvoice;
             newInvoice->pro_next = curr;
         }
+		*/
 //lastly the process for members chain
         curr = mem_head;
         prev = nullptr;
+
+        while (curr && toAdd->getMemNum() > curr->invoice->getMemNum()) {
+            prev = curr;
+            curr = curr->mem_next;
+        }
+		
+		if(prev) { prev->mem_next = newInvoice; }
+		else { mem_head = newInvoice; }
+
+		if(curr) { newInvoice->mem_next = curr; }
+		/*
         while (toAdd->getMemNum() > curr->invoice->getMemNum() && curr->mem_next) {
             prev = curr;
             curr = curr->mem_next;
@@ -179,6 +219,7 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->mem_next = newInvoice;
             newInvoice->mem_next = curr;
         }
+		*/
     }
     return true;
 }

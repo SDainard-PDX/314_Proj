@@ -7,7 +7,7 @@
 #include <fstream>
 
 /*
-*/
+makes a entry or change by a*/
 
 class PeopleNode
 {

@@ -1,4 +1,5 @@
 #include "invoice_chain.hpp"
+#include <sstream>
 
 #define MEM_REPORTS_PATH "reports/members/"
 #define PRO_REPORTS_PATH "reports/providers/"
@@ -288,11 +289,18 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	time_t now = time(0);
 	curr_time = localtime(&now);
 
-	//TODO: specify path into separate reports folder
-	string file_out = string(MEM_REPORTS_PATH) + "MemberLastMemberFirst" //TODO: make this say prov/memb name
-						  + to_string(curr_time->tm_mon + 1) + "-"
-						  + to_string(curr_time->tm_mday) + "-"
-						  + to_string(curr_time->tm_year + 1900) + ".txt";
+	string file_out = string(MEM_REPORTS_PATH);
+
+	//we store names in a single string so we split across spaces here
+	stringstream ss(mem->getName());
+	string token;
+	while(ss >> token) {
+		file_out += token;
+	}
+
+	file_out += (to_string(curr_time->tm_mon + 1) + "-"
+			   + to_string(curr_time->tm_mday) + "-"
+			   + to_string(curr_time->tm_year + 1900) + ".txt");
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -319,6 +327,7 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	if(!curr_inv) {		//member has not received services
 		output_file << "\tMember has received no services for this period." << endl;
 		cout << "\tMember has received no services for this period." << endl;
+		cout << "\nReport saved to \"" << file_out << "\"" << endl;
 		return true;
 	}
 
@@ -340,6 +349,8 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		curr_inv = curr_inv->mem_next;
 	}
 
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
+
 	return true;
 }
 
@@ -359,10 +370,18 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 	time_t now = time(0);
 	curr_time = localtime(&now);
 
-	string file_out = string(PRO_REPORTS_PATH) + "ProviderLastProviderFirst" //TODO: make this say prov/memb name
-						  + to_string(curr_time->tm_mon + 1) + "-"
-						  + to_string(curr_time->tm_mday) + "-"
-						  + to_string(curr_time->tm_year + 1900) + ".txt";
+	string file_out = string(PRO_REPORTS_PATH);
+
+	//we store names in a single string so we split across spaces here
+	stringstream ss(pro->getName());
+	string token;
+	while(ss >> token) {
+		file_out += token;
+	}
+
+	file_out += (to_string(curr_time->tm_mon + 1) + "-"
+					  + to_string(curr_time->tm_mday) + "-"
+					  + to_string(curr_time->tm_year + 1900) + ".txt");
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -389,6 +408,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 	if(!curr_inv) {		//provider has not provided services
 		output_file << "\tProvider has provided no services for this period." << endl;
 		cout << "\tProvider has provided no services for this period." << endl;
+		cout << "\nReport saved to \"" << file_out << "\"" << endl;
 		return true;
 	}
 
@@ -418,6 +438,8 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 
 		curr_inv = curr_inv->pro_next;
 	}
+
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
 
 	return true;
 }
@@ -507,7 +529,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 
 	output_file.close();
 
-	cout << "\nReport saved as \"" << file_out << "\"" << endl;
+	cout << "\nReport saved to \"" << file_out << "\"" << endl;
 	return true;
 }
 

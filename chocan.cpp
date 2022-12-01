@@ -114,7 +114,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 
         cout << " 8 - Generate Summary Report for Member"   << endl;
         cout << " 9 - Generate Summary Report for Provider" << endl;
-		cout << "10 - Generate Report of Accounts Payable"  << endl;
+		cout << "10 - Generate Report of Accounts Payable and EFT File"  << endl;
 
         cout << endl;
         cout << " 11 - Return to main menu"         << endl;

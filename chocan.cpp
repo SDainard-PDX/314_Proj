@@ -106,7 +106,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         Divider();
         cout << " 1 - Add Member / Provider / Manager"       << endl;
         cout << " 2 - Remove Member / Provider / Manager"    << endl;
-        cout << " 3 - Edit Member / Provider / Manager"      << endl;//TODO
+        cout << " 3 - Edit Member / Provider / Manager"      << endl;
         cout << " 4 - View All Members / Providers / Managers" << endl;
         cout << " 5 - Add Service"      << endl;
         cout << " 6 - Remove Service"   << endl;
@@ -180,8 +180,36 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
                 break;
 
-            case 3: cout << "\t\tEdit Person Selected, will do later" << endl;
+            case 3:
+                cout << "\n\t member = M provider = P manager = C" << endl;
+                cout << "\tWhat type of person to edit: ";
+                pick = Choice("mpc");
+
+                cout << "\nEnter the id number of person to edit: ";
+                getline(cin, entry_number);
+                if (rightSize(entry_number, 9, 9)) {
+                    if (pick == 'm') {
+                        if (VerifyPerson(memDS, entry_number, reply)) {
+                            memDS->edit_person(entry_number);
+                            cout << "\nEdited " << entry_number << " in Members" << endl;
+                        } else { cout << "No match returning to menu." << endl;}
+                    }
+                    else if (pick == 'p') {
+                        if (VerifyPerson(proDS, entry_number, reply)) {
+                            proDS->edit_person(entry_number);
+                            cout << "\nEdited " << entry_number << " in Providers" << endl;
+                        }else { cout << "No match returning to menu." << endl;}
+                    }
+                    else if (pick == 'c') {
+                        if (VerifyPerson(manDS, entry_number, reply)) {
+                            manDS->edit_person(entry_number);
+                            cout << "\nEdited " << entry_number << " in Managers" << endl;
+                        } else { cout << "No match returning to menu." << endl;}
+                    }
+                    else cout << "\t\tUnable to Edit selection" << endl;
+                }
                 break;
+
             case 4:
                 cout << "\n\t member = M provider = P manager = C" << endl;
                 cout << "\tWhat type of person to view: ";

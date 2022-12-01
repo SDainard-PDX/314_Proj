@@ -20,8 +20,8 @@ class Session_Invoice
                 std::string servNumIn,
                 std::string proNumIn,
                 std::string memNumIn,
-                struct tm *servDateIn,
                 struct tm *subTimeIn,
+                struct tm *servDateIn,
                 std::string commIn);
         bool create(std::string pro);
         bool edit();

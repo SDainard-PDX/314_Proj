@@ -1,4 +1,5 @@
 #include "service_item.hpp"
+#include <iomanip>
 
 using namespace std;
 
@@ -52,8 +53,8 @@ bool Service_Item::edit()
 
 void Service_Item::display() const
 {
-    cout << "Number: " << number << "\tFee: " << fee << endl;
-    cout << "Name: " << name << endl;
+    cout << "Number: " << number << "\tFee: $" << std::fixed << std::setprecision(2);
+	cout << fee << "\nName: " << name << endl;
 }
 
 

@@ -42,23 +42,23 @@ int main()
         switch (menu_choice)
         {
             case 1: //manager terminal
-                cout << "\nEnter your manager id number: ";
+                cout << "\nEnter your manager ID number: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(manDS, entry_number, reply)) {
                         menu_choice = Menu2(manDS, proDS, memDS, servDS, invoiceDS);
                     }//goto menu 2
-                    else { cout << "No match returning to main menu." << endl;}
+                    else { cout << "Invalid login. Returning to main menu." << endl;}
                 }
                 break;
             case 2: //providers terminal
-                cout << "\nEnter your provider id number: ";
+                cout << "\nEnter your provider ID number: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(proDS, entry_number, reply)) {
                         menu_choice = Menu3(entry_number, manDS, proDS, memDS, servDS, invoiceDS);
                     }//goto menu 3
-                    else cout << "No match returning to main menu." << endl;
+                    else cout << "Invalid login. Returning to main menu." << endl;
                 }
                 break;
             case 3:
@@ -67,7 +67,7 @@ int main()
                 break;
             case 0: cout << "\t\tGood-bye!" << endl;
                 break;
-            default: cout << "\tInvalid selection, please enter a valid selection or 0 to quit." << endl;
+            default: cout << "\tInvalid selection. Please enter a valid selection or 0 to quit." << endl;
                 break;
         }
         Wait4Enter();
@@ -127,8 +127,8 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         switch (menu_choice)
         {
             case 1:
-                cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person to add: ";
+                cout << "\n\t Member = 'M' | Provider = 'P' | Manager = 'C'" << endl;
+                cout << "\tEnter the type of person to view: ";
                 pick = Choice("mpc");
 
 				toAdd = new Person;
@@ -151,68 +151,68 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 break;
 
             case 2:
-                cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person to remove: ";
+                cout << "\n\t Member = 'M' | Provider = 'P' | Manager = 'C'" << endl;
+                cout << "\tEnter the type of person to view: ";
                 pick = Choice("mpc");
 
-                cout << "\nEnter the id number of person to remove: ";
+                cout << "\nEnter the ID number of the person to remove: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (pick == 'm') {
                         if (VerifyPerson(memDS, entry_number, reply)) {
                             memDS->remove_person(entry_number);
                             cout << "\nRemoved " << entry_number << " from Members" << endl;
-                        } else { cout << "No match returning to menu." << endl;}
+                        } else { cout << "Invalid member. Returning to menu." << endl;}
                     }
                     else if (pick == 'p') {
                         if (VerifyPerson(proDS, entry_number, reply)) {
                             proDS->remove_person(entry_number);
                             cout << "\nRemoved " << entry_number << " from Providers" << endl;
-                        }else { cout << "No match returning to menu." << endl;}
+                        }else { cout << "Invalid provider. Returning to menu." << endl;}
                     }
                     else if (pick == 'c') {
                         if (VerifyPerson(manDS, entry_number, reply)) {
                             manDS->remove_person(entry_number);
                             cout << "\nRemoved " << entry_number << " from Managers" << endl;
-                        } else { cout << "No match returning to menu." << endl;}
+                        } else { cout << "Invalid manager. Returning to menu." << endl;}
                     }
                     else cout << "\t\tUnable to Remove selection" << endl;
                 }
                 break;
 
             case 3:
-                cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person to edit: ";
+                cout << "\n\t Member = 'M' | Provider = 'P' | Manager = 'C'" << endl;
+                cout << "\tEnter the type of person to view: ";
                 pick = Choice("mpc");
 
-                cout << "\nEnter the id number of person to edit: ";
+                cout << "\nEnter the ID number of the person to edit: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (pick == 'm') {
                         if (VerifyPerson(memDS, entry_number, reply)) {
                             memDS->edit_person(entry_number);
                             cout << "\nEdited " << entry_number << " in Members" << endl;
-                        } else { cout << "No match returning to menu." << endl;}
+                        } else { cout << "Invalid member. Returning to menu." << endl;}
                     }
                     else if (pick == 'p') {
                         if (VerifyPerson(proDS, entry_number, reply)) {
                             proDS->edit_person(entry_number);
                             cout << "\nEdited " << entry_number << " in Providers" << endl;
-                        }else { cout << "No match returning to menu." << endl;}
+                        }else { cout << "Invalid provider. Returning to menu." << endl;}
                     }
                     else if (pick == 'c') {
                         if (VerifyPerson(manDS, entry_number, reply)) {
                             manDS->edit_person(entry_number);
                             cout << "\nEdited " << entry_number << " in Managers" << endl;
-                        } else { cout << "No match returning to menu." << endl;}
+                        } else { cout << "Invalid manager. Returning to menu." << endl;}
                     }
                     else cout << "\t\tUnable to Edit selection" << endl;
                 }
                 break;
 
             case 4:
-                cout << "\n\t member = M provider = P manager = C" << endl;
-                cout << "\tWhat type of person to view: ";
+                cout << "\n\t Member = 'M' | Provider = 'P' | Manager = 'C'" << endl;
+                cout << "\tEnter the type of person to view: ";
                 pick = Choice("mpc");
                 if (pick == 'm') {
                     cout << endl;
@@ -237,10 +237,10 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                         cout << "\nAdded Service to Directory" << endl;
                     }
                 }
-                else cout << "\n\t\tUnable to Add selection" << endl;
+                else cout << "\n\t\tUnable to add Service. No changes saved." << endl;
                 break;
             case 6:
-                cout << "\nEnter the id number of service to remove: ";
+                cout << "\nEnter the Service number of the Service to remove: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if(servDS->remove_item(entry_number)) {
@@ -250,18 +250,18 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 else cout << "\n\t\tUnable to Remove selection" << endl;
                 break;
             case 7:
-                cout << "\nEnter the id number of service to edit: ";
+                cout << "\nEnter the Service number of the Service to edit: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if(servDS->edit_item(entry_number)) {
                         cout << "\nEdited Service " << entry_number << " from Directory." << endl;
                     }
                 }
-                else cout << "\n\t\tUnable to Edit selection" << endl;
+                else cout << "\n\t\tUnable to edit selection. No changes saved." << endl;
                 break;
 
 			case 8:			//member summary report
-                cout << "\nEnter the id number of the member to generate a report for: ";
+                cout << "\nEnter the ID number of the member to generate a report for: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(memDS, entry_number, reply)) {
@@ -271,7 +271,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 }
 				break;
 			case 9:			//provider summary report
-                cout << "\nEnter the id number of the provider to generate a report for: ";
+                cout << "\nEnter the ID number of the provider to generate a report for: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(proDS, entry_number, reply)) {
@@ -287,7 +287,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;
-            default: cout << "\tInvalid selection, please enter a valid selection or 0 to quit." << endl;
+            default: cout << "\tInvalid selection. Please enter a valid selection or 0 to quit." << endl;
                 break;
         }
 
@@ -308,7 +308,7 @@ int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
     do      //Menu for making selections from cmd line
     {
         ClearScreen();
-        cout << "\n\tWelcome Provider"  << endl;
+        cout << "\n\tWelcome PROVIDER"  << endl;
         cout << "\n\tWhat would you like to do?"    << endl;
         Divider();
         cout << " 1 - Verify Member (pre-service)"  << endl;
@@ -325,20 +325,20 @@ int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
         switch (menu_choice)
         {
             case 1:
-                cout << "\nEnter the member id number: ";
+                cout << "\nEnter the member ID number: ";
                 getline(cin, entry_number);
                 if (rightSize(entry_number, 9, 9)) {
                     if (VerifyPerson(memDS, entry_number, reply)) {
-                        cout << "\tMember status is: " + reply;
+                        cout << "\tMember status: " + reply;
                     }
-                    else cout << "No match returning to main menu." << endl;
+                    else cout << "Member status: Invalid" << endl;
                 }
                 break;
             case 2:
                 addition = new Session_Invoice;
                 addition->create(Pro_Number);
                 if (addition) { invoiceDS->add_invoice(addition); }
-                else cout << "\nUnable to create Invoice, no changes" << endl;
+                else cout << "\nUnable to create Invoice. No changes have been saved." << endl;
                 break;
             case 3:
                 cout << "Please enter the email to send to: ";
@@ -350,7 +350,7 @@ int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
                 return menu_choice;
             case 0: cout << "\t\tGood-bye!" << endl;
                 return menu_choice;
-            default: cout << "\tInvalid selection, please enter a valid selection or 0 to quit." << endl;
+            default: cout << "\tInvalid selection. Please enter a valid selection or 0 to quit." << endl;
                 break;
         }
 

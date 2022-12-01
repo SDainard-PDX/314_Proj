@@ -1,4 +1,5 @@
 #include "invoice_chain.hpp"
+#include <iomanip>
 #include <sstream>
 
 using namespace std;
@@ -381,13 +382,13 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 				<< "Provider ID: #" << pro->getNumber() << endl
 				<< "Provider Address:\n\t" << pro->getAddress() << endl
 				<< "\t" << pro->getCity() << ", " << pro->getState()
-				<< " " << pro->getZip() << "\n\nServices Received:" << endl;
+				<< " " << pro->getZip() << "\n\nServices Provided:" << endl;
 	
 	cout << "Provider Name: " << pro->getName() << endl
 		 << "Provider ID: #" << pro->getNumber() << endl
 		 << "Provider Address:\n\t" << pro->getAddress() << endl
 		 << "\t" << pro->getCity() << ", " << pro->getState()
-		 << " " << pro->getZip() << "\n\nServices Received:" << endl;
+		 << " " << pro->getZip() << "\n\nServices Provided:" << endl;
 	
 	Invoice_ChainNode *curr_inv = pro_head;
 
@@ -426,8 +427,12 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 					if (sub_time->tm_min < 10) { output_file << '0'; }
 		output_file << (sub_time->tm_min) << ":";
 					if (sub_time->tm_sec < 10) { output_file << '0'; }
-		output_file << (sub_time->tm_sec) << "\n\tFee due: "
-					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
+		output_file << "\n\tFee due: ";
+					if (serv) {
+						output_file << "$" << std::fixed
+						<< std::setprecision(2) << serv->getFee() << endl << endl;
+					}
+					else { output_file << "Invalid fee\n" << endl; }
 
 		cout << "\t" << "Service #" << curr_inv->invoice->getSerNum() <<" provided to "
 			 << ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
@@ -445,13 +450,17 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 			 if (sub_time->tm_min < 10) { output_file << '0'; }
 		cout << (sub_time->tm_min) << ":";
 			 if (sub_time->tm_sec < 10) { output_file << '0'; }
-		cout << (sub_time->tm_sec) << "\n\tFee due: "
-             << ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
+		cout << "\n\tFee due: ";
+					if (serv) {
+						cout << "$" << std::fixed
+						<< std::setprecision(2) << serv->getFee() << endl << endl;
+					}
+					else { cout << "Invalid fee\n" << endl; }
 
 		curr_inv = curr_inv->pro_next;
 	}
 
-	cout << "\nReport saved to \"" << file_out << "\"" << endl;
+	cout << "Report saved to \"" << file_out << "\"" << endl;
 
 	return true;
 }
@@ -527,10 +536,12 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 		//write out old provider's info
 		output_file << "\t" << pro_name << " #" << pro_id << endl
 					<< "\tConsultations: " << pro_consuls << endl
+					<< std::fixed << std::setprecision(2)
 					<< "\tFee due: $" << pro_fee << endl;
 
 		cout << "\t" << pro_name << " #" << pro_id << endl
 			 << "\tConsultations: " << pro_consuls << endl
+			 << std::fixed << std::setprecision(2)
 			 << "\tFee due: $" << pro_fee << endl;
 
 		output_eft_file << pro_name << "," << pro_id << "," << pro_fee << endl;	
@@ -583,10 +594,12 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	
 	output_file << "Total Providers To Be Paid: " << total_pro << endl
 	            << "Total Consultations: " << total_consuls << endl
+				<< std::fixed << std::setprecision(2)
 	            << "Total Fee Due: $" << total_fee << endl;
 
 	cout << "Total Providers To Be Paid: " << total_pro << endl
 	            << "Total Consultations: " << total_consuls << endl
+				<< std::fixed << std::setprecision(2)
 	            << "Total Fee Due: $" << total_fee << endl;
 
 	output_file.close();

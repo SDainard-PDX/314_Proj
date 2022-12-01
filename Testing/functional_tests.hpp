@@ -15,8 +15,6 @@
 #include <sstream>
 #include <iostream>
 
-using namespace std;
-
 namespace functional_tests {
 
 //declare test groups here
@@ -29,15 +27,15 @@ namespace functional_tests {
     void divider_test();
     void clearscn_test();
     void sft_test();
-    void allLet_test(string, bool);
-    void allNum_test(string, bool);
-    void rightsize_test(string, int, int, bool);
+    void allLet_test(std::string, bool);
+    void allNum_test(std::string, bool);
+    void rightsize_test(std::string, int, int, bool);
 
 
 //these are testing groups
 
     void smoke_tests() {
-        cout << "\tFunctional smoke test:" << endl;
+        std::cout << "\tFunctional smoke test:" << std::endl;
         /* normally wouldn't include clear screen for obvious issues with losing anything
         * output before it; it's included here commented out as an example.
             clearscn_test(); */
@@ -46,25 +44,25 @@ namespace functional_tests {
         allLet_test("thisisallletters", true);
         allNum_test("1", true);
         rightsize_test("this string is 28 characters", 28, 28, true);
-        cout << "Smoke Tests: Passed, Functional" << endl;
+        std::cout << "Smoke Tests: Passed, Functional" << std::endl;
     }
 
     void verification_tests() {
-        cout << "\tFunctional verification tests:" << endl;
+        std::cout << "\tFunctional verification tests:" << std::endl;
         allLet_test("thishas1numberinit", false);
         allNum_test("123a456", false);
         rightsize_test("this string is 27 characters", 29, 100, false);
         rightsize_test("this string is 27 characters", 0, 27, false);
-        cout << "Verification Tests: Passed, Functional" << endl;
+        std::cout << "Verification Tests: Passed, Functional" << std::endl;
     }
 
 //this is a block test AKA a small system test as you can see it contains both the
 //smoke test for functional and the verification test
     void all_tests() {
-        cout << "\nFunctional Unit Tests" << endl;
+        std::cout << "\nFunctional Unit Tests" << std::endl;
         smoke_tests();
         verification_tests();
-        cout << endl;
+        std::cout << std::endl;
     }
 
 
@@ -72,54 +70,54 @@ namespace functional_tests {
 
     void divider_test() //covers ln 5-9
     {
-        string x;
-        string y = "************************************************";
+        std::string x;
+        std::string y = "************************************************";
 
-        stringstream q;
-        streambuf *mitt = q.rdbuf();
+        std::stringstream q;
+        std::streambuf *mitt = q.rdbuf();
         Divider(mitt);
         getline(q, x);
         assert(x == y);
-        cout << "PASSED: Divider()" << endl; //if assert fails this doesn't print
+        std::cout << "PASSED: Divider()" << std::endl; //if assert fails this doesn't print
     }
 
     void clearscn_test() //covers ln 11-15
     {
-        cout << "***** CLEAR SCREEN HAS FAILED *****" << endl;
+        std::cout << "***** CLEAR SCREEN HAS FAILED *****" << std::endl;
         assert(ClearScreen() == true);
-        cout << "PASSED: ClearScreen()" << endl;
+        std::cout << "PASSED: ClearScreen()" << std::endl;
     }
 
     void sft_test() //covers ln 17-22
     {
-        string s;
+        std::string s;
         int i;
 
-        istrstream in("12 extra input");
-        streambuf *x = in.rdbuf();
+        std::istrstream in("12 extra input");
+        std::streambuf *x = in.rdbuf();
 
         in >> i;
         Safety(x);
         getline(in, s);
         assert(s == "");
-        cout << "PASSED: Safety()" << endl;
+        std::cout << "PASSED: Safety()" << std::endl;
     }
 
-    void allNum_test(string input, bool expected) //covers ln 89-95
+    void allNum_test(std::string input, bool expected) //covers ln 89-95
     {
         assert(allNum(input) == expected);
-        cout << "PASSED: allNum() expecting " << expected << endl;
+        std::cout << "PASSED: allNum() expecting " << expected << std::endl;
     }
 
-    void allLet_test(string input, bool expected) //covers ln 97-104
+    void allLet_test(std::string input, bool expected) //covers ln 97-104
     {
         assert(allLet(input) == expected);
-        cout << "PASSED: allLet() expecting " << expected << endl;
+        std::cout << "PASSED: allLet() expecting " << expected << std::endl;
     }
 
-    void rightsize_test(string x, int min, int max, bool expected) //covers ln 106-110
+    void rightsize_test(std::string x, int min, int max, bool expected) //covers ln 106-110
     {
         assert(rightSize(x, min, max) == expected);
-        cout << "PASSED: rightSize() expecting " << expected << endl;
+        std::cout << "PASSED: rightSize() expecting " << expected << std::endl;
     }
 }

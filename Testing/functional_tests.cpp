@@ -4,7 +4,7 @@
 
 #include "functional_tests.hpp"
 /*
-g++ -g -Wall -Wno-deprecated -o functional_tests functional_tests.cpp functional.cpp
+g++ -g -o functional_tests functional_tests.cpp functional.cpp
 */
 
 

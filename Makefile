@@ -53,15 +53,3 @@ tar: clean
 # clean up the compiled files and editor chaff
 clean cls:
 	rm -f $(PROGS) *.o *~ \#*
-
-ci:
-	if [ ! -d RCS ] ; then mkdir RCS; fi
-	ci -t-none -m"lazy-checkin" -l *.[ch] ?akefile *.bash
-
-# if you are in more of a git Boom Boom Pow mood.
-# "Gotta git [sic] that"
-#   https://www.youtube.com/watch?v=#m#8GqaOz90
-git get gat:
-	if [ ! -d .git ] ; then git init; fi
-	git add *.[ch] ?akefile
-	git commit -m"Gotta git that"

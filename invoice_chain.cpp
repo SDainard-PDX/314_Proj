@@ -84,7 +84,7 @@ int Invoice_Chain::populate(const string& file_in)
         getline(in_file, commIn);
 
         //create person to add
-        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, servDateIn, subTimeIn, commIn);
+        Session_Invoice *toAdd = new Session_Invoice(servNumIn, proNumIn, memNumIn, subTimeIn, servDateIn, commIn);
         toAdd->setInvNum(++invoice_count);
 
         //add the vehicle to the table & increment count
@@ -328,12 +328,14 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	//TODO: specify path into separate reports folder
 	string file_out = string(MEM_REPORTS_PATH) + "MemberLastMemberFirst" //TODO: make this say prov/memb name
-						  + to_string(curr_time->tm_mon + 1) + "-"
+						  + to_string(curr_time->tm_mon) + "-"
 						  + to_string(curr_time->tm_mday) + "-"
-						  + to_string(curr_time->tm_year + 1900) + ".txt";
+						  + to_string(curr_time->tm_year) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -370,13 +372,13 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 
 		output_file << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
 					<< ((pro) ? pro->getName() : "Invalid provider") << " on "
-					<< (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
-					<< (time->tm_year + 1900) << "\n" << endl;
+					<< (time->tm_mon) << "-" << (time->tm_mday) << "-"
+					<< (time->tm_year) << "\n" << endl;
 
 		cout << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
 			 << ((pro) ? pro->getName() : "Invalid provider") << " on "
-			 << (time->tm_mon + 1) << "-" << (time->tm_mday) << "-"
-			 << (time->tm_year + 1900) << "\n" << endl;
+			 << (time->tm_mon) << "-" << (time->tm_mday) << "-"
+			 << (time->tm_year) << "\n" << endl;
 
 		curr_inv = curr_inv->mem_next;
 	}
@@ -399,11 +401,13 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	string file_out = string(PRO_REPORTS_PATH) + "ProviderLastProviderFirst" //TODO: make this say prov/memb name
-						  + to_string(curr_time->tm_mon + 1) + "-"
+						  + to_string(curr_time->tm_mon) + "-"
 						  + to_string(curr_time->tm_mday) + "-"
-						  + to_string(curr_time->tm_year + 1900) + ".txt";
+						  + to_string(curr_time->tm_year) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -443,8 +447,8 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on "
 					<< (ser_time->tm_mon) << "-" << (ser_time->tm_mday) << "-"
 					<< (ser_time->tm_year) << "\tRecorded on "
-					<< (sub_time->tm_mon + 1) << "-" << (sub_time->tm_mday) << "-"
-					<< (sub_time->tm_year + 1900) << " " << (sub_time->tm_hour) << ":"
+					<< (sub_time->tm_mon) << "-" << (sub_time->tm_mday) << "-"
+					<< (sub_time->tm_year) << " " << (sub_time->tm_hour) << ":"
 					<< (sub_time->tm_min) << ":" << (sub_time->tm_sec) << "\n\tFee due: "
 					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
@@ -452,8 +456,8 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on "
 					<< (ser_time->tm_mon) << "-" << (ser_time->tm_mday) << "-"
 					<< (ser_time->tm_year) << "\tRecorded on " 
-					<< (sub_time->tm_mon + 1) << "-" << (sub_time->tm_mday) << "-"
-					<< (sub_time->tm_year + 1900) << " " << (sub_time->tm_hour) << ":"
+					<< (sub_time->tm_mon) << "-" << (sub_time->tm_mday) << "-"
+					<< (sub_time->tm_year) << " " << (sub_time->tm_hour) << ":"
 					<< (sub_time->tm_min) << ":" << (sub_time->tm_sec) << "\n\tFee due: "
 					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
@@ -480,12 +484,14 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	//TODO: specify path into separate reports folder
 	std::string file_out = string(ACC_REPORTS_PATH) + "AccountsPayable"
-						  + std::to_string(curr_time->tm_mon + 1) + "-"
+						  + std::to_string(curr_time->tm_mon) + "-"
 						  + std::to_string(curr_time->tm_mday) + "-"
-						  + std::to_string(curr_time->tm_year + 1900) + ".txt";
+						  + std::to_string(curr_time->tm_year) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);

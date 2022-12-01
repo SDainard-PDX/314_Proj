@@ -281,9 +281,9 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		file_out += token;
 	}
 
-	file_out += (to_string(curr_time->tm_mon + 1) + "-"
+	file_out += (to_string(curr_time->tm_mon) + "-"
 			   + to_string(curr_time->tm_mday) + "-"
-			   + to_string(curr_time->tm_year + 1900) + ".txt");
+			   + to_string(curr_time->tm_year) + ".txt");
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -322,17 +322,17 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		output_file << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
     
 					<< ((pro) ? pro->getName() : "Invalid provider") << " on ";
-        if (time->tm_mon < 9) { output_file << '0'; }
-        output_file << (time->tm_mon + 1) << "-";
+        if (time->tm_mon < 10) { output_file << '0'; }
+        output_file << (time->tm_mon) << "-";
         if (time->tm_mday < 10) { output_file << '0'; }
-        output_file << (time->tm_mday) << "-" << (time->tm_year + 1900) << "\n" << endl;
+        output_file << (time->tm_mday) << "-" << (time->tm_year) << "\n" << endl;
 
 		cout << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
 			 << ((pro) ? pro->getName() : "Invalid provider") << " on ";
-        if (time->tm_mon < 9) { output_file << '0'; }
-        cout << (time->tm_mon + 1) << "-";
+        if (time->tm_mon < 10) { output_file << '0'; }
+        cout << (time->tm_mon) << "-";
         if (time->tm_mday < 10) { output_file << '0'; }
-        cout << (time->tm_mday) << "-" << (time->tm_year + 1900) << "\n" << endl;
+        cout << (time->tm_mday) << "-" << (time->tm_year) << "\n" << endl;
 
 		curr_inv = curr_inv->mem_next;
 	}
@@ -369,9 +369,9 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 		file_out += token;
 	}
 
-	file_out += (to_string(curr_time->tm_mon + 1) + "-"
+	file_out += (to_string(curr_time->tm_mon) + "-"
 					  + to_string(curr_time->tm_mday) + "-"
-					  + to_string(curr_time->tm_year + 1900) + ".txt");
+					  + to_string(curr_time->tm_year) + ".txt");
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -408,46 +408,45 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 		tm *ser_time = curr_inv->invoice->getServDate();
 		tm *sub_time = curr_inv->invoice->getSubTime();
 
+		//this is very ugly but it's mainly for formatting purposes
 		output_file << "\t" << "Service #" << curr_inv->invoice->getSerNum() << " provided to "
-
 					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
-        if (ser_time->tm_mon < 9) { output_file << '0'; }
-        output_file << (ser_time->tm_mon + 1) << "-";
-        if (ser_time->tm_mday < 10) { output_file << '0'; }
-        output_file << (ser_time->tm_mday) << "-"
-					<< (ser_time->tm_year + 1900) << "\tRecorded on ";
-        if (sub_time->tm_mon < 9) { output_file << '0'; }
-        output_file << (sub_time->tm_mon + 1) << "-";
-        if (sub_time->tm_mday < 10) { output_file << '0'; }
-        output_file << (sub_time->tm_mday) << "-"
-					<< (sub_time->tm_year + 1900) << " ";
-        if (sub_time->tm_hour < 10) { output_file << '0'; }
-        output_file << (sub_time->tm_hour) << ":";
-        if (sub_time->tm_min < 10) { output_file << '0'; }
-        output_file << (sub_time->tm_min) << ":";
-        if (sub_time->tm_sec < 10) { output_file << '0'; }
-        output_file << (sub_time->tm_sec) << "\n\tFee due: "
+					if (ser_time->tm_mon < 10) { output_file << '0'; }
+		output_file << (ser_time->tm_mon) << "-";
+					if (ser_time->tm_mday < 10) { output_file << '0'; }
+		output_file << (ser_time->tm_mday) << "-"
+					<< (ser_time->tm_year) << "\tRecorded on ";
+					if (sub_time->tm_mon < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_mon) << "-";
+					if (sub_time->tm_mday < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_mday) << "-"
+					<< (sub_time->tm_year) << " ";
+					if (sub_time->tm_hour < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_hour) << ":";
+					if (sub_time->tm_min < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_min) << ":";
+					if (sub_time->tm_sec < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_sec) << "\n\tFee due: "
 					<< ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
 		cout << "\t" << "Service #" << curr_inv->invoice->getSerNum() <<" provided to "
-					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
-        if (ser_time->tm_mon < 9) { output_file << '0'; }
-        cout << (ser_time->tm_mon + 1) << "-";
-        if (ser_time->tm_mday < 10) { output_file << '0'; }
-        cout << (ser_time->tm_mday) << "-";
-        cout << (ser_time->tm_year + 1900) << "\tRecorded on ";
-        if (sub_time->tm_mon < 9) { output_file << '0'; }
-        cout << (sub_time->tm_mon + 1) << "-";
-        if (sub_time->tm_mday < 10) { output_file << '0'; }
-        cout << (sub_time->tm_mday) << "-" << (sub_time->tm_year + 1900);
-        if (sub_time->tm_hour < 10) { output_file << '0'; }
-        cout << " " << (sub_time->tm_hour) << ":";
-        if (sub_time->tm_min < 10) { output_file << '0'; }
-        cout << (sub_time->tm_min) << ":";
-        if (sub_time->tm_sec < 10) { output_file << '0'; }
-        cout << (sub_time->tm_sec) << "\n\tFee due: "
-            << ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
-
+			 << ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
+			 if (ser_time->tm_mon < 10) { output_file << '0'; }
+	    cout << (ser_time->tm_mon) << "-";
+			 if (ser_time->tm_mday < 10) { output_file << '0'; }
+		cout << (ser_time->tm_mday) << "-"
+			 << (ser_time->tm_year) << "\tRecorded on ";
+			 if (sub_time->tm_mon < 10) { output_file << '0'; }
+		cout << (sub_time->tm_mon) << "-";
+			 if (sub_time->tm_mday < 10) { output_file << '0'; }
+		cout << (sub_time->tm_mday) << "-" << (sub_time->tm_year);
+			 if (sub_time->tm_hour < 10) { output_file << '0'; }
+		cout << " " << (sub_time->tm_hour) << ":";
+			 if (sub_time->tm_min < 10) { output_file << '0'; }
+		cout << (sub_time->tm_min) << ":";
+			 if (sub_time->tm_sec < 10) { output_file << '0'; }
+		cout << (sub_time->tm_sec) << "\n\tFee due: "
+             << ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
 		curr_inv = curr_inv->pro_next;
 	}

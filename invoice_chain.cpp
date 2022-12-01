@@ -462,11 +462,11 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	if(!pro_head)
 		return false; //TODO: throw error?
 	
-	int total_pro = 1;
+	int total_pro = 0;
 	int total_consuls = 0;
-	int total_fee = 0;
+	double total_fee = 0;
 	int pro_consuls = 0;
-	int pro_fee = 0;
+	double pro_fee = 0;
 
 	Invoice_ChainNode *curr_inv = pro_head;
 	std::string pro_id = curr_inv->invoice->getProNum();
@@ -500,7 +500,49 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 
 	//while loop--go through providers,
 	while(curr_inv) {
-		if(pro_id != curr_inv->invoice->getProNum()) { //new provider
+		while(curr_inv && pro_id == curr_inv->invoice->getProNum()) {
+			Service_Item *serv = servDS->find_item(curr_inv->invoice->getSerNum());
+
+			if(!serv) //invalid service in session invoices
+			{
+				curr_inv = curr_inv->pro_next;
+				continue; //throw error too
+			}
+
+			double fee = serv->getFee();
+			total_fee += fee;
+			pro_fee += fee;
+			++total_consuls;
+			++pro_consuls;
+
+			curr_inv = curr_inv->pro_next;
+		}
+
+		Person *pro = proDS->find_person(pro_id);
+
+		if(!pro) //invalid provider in session invoices
+			return false; //TODO: throw error
+
+		std::string pro_name = pro->getName();
+
+		//write out old provider's info
+		output_file << "\t" << pro_name << " #" << pro_id << endl
+					<< "\tConsultations: " << pro_consuls << endl
+					<< "\tFee due: $" << pro_fee << endl;
+
+		cout << "\t" << pro_name << " #" << pro_id << endl
+			 << "\tConsultations: " << pro_consuls << endl
+			 << "\tFee due: $" << pro_fee << endl;
+
+		output_eft_file << pro_name << "," << pro_id << "," << pro_fee << endl;	
+		
+		//now prime for new provider
+		pro_fee = pro_consuls = 0;
+		if(curr_inv) { pro_id = curr_inv->invoice->getProNum(); }
+		++total_pro;
+	}
+		/*{
+		if(!curr_inv->pro_next || pro_id != curr_inv->invoice->getProNum()) { //new provider
 			Person *pro = proDS->find_person(pro_id);
 
 			if(!pro) //invalid provider in session invoices
@@ -538,7 +580,7 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 		++total_consuls;
 		
 		curr_inv = curr_inv->pro_next;
-	}
+	}*/
 	
 	output_file << "Total Providers To Be Paid: " << total_pro << endl
 	            << "Total Consultations: " << total_consuls << endl

@@ -211,12 +211,13 @@ bool Invoice_Chain::remove_invoice(int inv_num)
                     if(curr->mem_next) { curr->mem_next->mem_prev = curr->mem_prev; }
                 }
                 delete del;
+				return true;
             }
             prev = curr;
             curr = curr->inv_num_next;
         }
     }
-    return true;
+    return false;
 }
 
 void Invoice_Chain::display_all()

@@ -126,12 +126,13 @@ bool Service_Directory::remove_item(string remove)
                 if (curr == head) { head = curr->next; }
                 else { prev->next = curr->next; }
                 delete del;
+				return true;
             }
             prev = curr;
             curr = curr->next;
         }
     }
-    return true;
+    return false;
 }
 
 Service_Item * Service_Directory::find_item(string match)

@@ -116,12 +116,13 @@ bool People::remove_person(string remove)
                 if (curr == head) { head = curr->next; }
                 else { prev->next = curr->next; }
                 delete del;
+				return true;
             }
             prev = curr;
             curr = curr->next;
         }
     }
-    return true;
+    return false;
 }
 
 Person * People::find_person(string match)

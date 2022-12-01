@@ -37,12 +37,14 @@ bool Session_Invoice::create(string pro){
 
         cout << "Please enter the 2 digit month of the service date(eg Jan = 01): ";
         mo = Choice( 1, 12);
+        --mo;
 
         cout << "Please enter the 2 digit day of the service date(eg 12th = 12): ";
         da = Choice( 1, 31);
+        --da;
 
-        cout << "Please enter the 2 digit yr of the service date(eg 2022 = 22): ";
-        yr = Choice( 00, 99);
+        cout << "Please enter the 4 digit yr of the service date(eg 2022 = 2022): ";
+        yr = Choice( 1900, 2100);
 
         cout << "Please enter any comments about the session (100 char max): ";
         getline(cin,comm);
@@ -67,6 +69,8 @@ bool Session_Invoice::create(string pro){
         else {
             time_t now = time(0);
             sub_time = localtime(&now);
+			sub_time->tm_year += 1900;
+			sub_time->tm_mon += 1;
         }
 
     }
@@ -97,8 +101,8 @@ void Session_Invoice::display() const
     cout << "Provider Number: " << pro_num << endl;
     cout << "  Member Number: " << mem_num << endl;
     cout << "  Service Code : " << serv_code << endl;
-    cout << "  Service Date : " << serv_date->tm_mon << "-"
-        << serv_date->tm_mday << "-" << serv_date->tm_year << endl;
+    cout << "  Service Date : " << serv_date->tm_mon + 1 << "-"
+        << serv_date->tm_mday + 1 << "-" << serv_date->tm_year << endl;
     cout << "Comments: " << comments << endl;
 }
 

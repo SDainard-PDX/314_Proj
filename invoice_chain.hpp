@@ -7,6 +7,12 @@
 #include <string>
 #include <iostream>
 #include <fstream>
+#include <iomanip>
+
+#define MEM_REPORTS_PATH "reports/members/"
+#define PRO_REPORTS_PATH "reports/providers/"
+#define ACC_REPORTS_PATH "reports/accounts/"
+#define EFT_PATH         "reports/eft/"
 
 /*
 */

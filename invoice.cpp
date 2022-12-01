@@ -86,7 +86,9 @@ bool Session_Invoice::create(string pro){
 
 bool Session_Invoice::edit()
 {
+
     cout << "This Service Item's current information is: " << endl;
+
     display();
 
     cout << "Make changes here. Kept information must be re-entered." << endl;

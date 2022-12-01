@@ -86,10 +86,10 @@ bool Session_Invoice::create(string pro){
 
 bool Session_Invoice::edit()
 {
-    cout << "This Service Items current information is: " << endl;
+    cout << "This Service Item's current information is: " << endl;
     display();
 
-    cout << "Make changes here, kept information must be re-entered." << endl;
+    cout << "Make changes here. Kept information must be re-entered." << endl;
     create(this->getProNum());
 
     return true;
@@ -97,12 +97,12 @@ bool Session_Invoice::edit()
 
 void Session_Invoice::display() const
 {
-    cout << "\n Invoice Number: " << setfill('0') << setw(6) << invoice_num << endl;
-    cout << "Provider Number: " << pro_num << endl;
+    cout << "\n  Invoice Number: " << setfill('0') << setw(6) << invoice_num << endl;
+    cout << "  Provider Number: " << pro_num << endl;
     cout << "  Member Number: " << mem_num << endl;
     cout << "  Service Code : " << serv_code << endl;
-    cout << "  Service Date : " << serv_date->tm_mon + 1 << "-"
-        << serv_date->tm_mday + 1 << "-" << serv_date->tm_year << endl;
+    cout << "  Service Date : " << serv_date->tm_mon << "-"
+        << serv_date->tm_mday << "-" << serv_date->tm_year << endl;
     cout << "Comments: " << comments << endl;
 }
 

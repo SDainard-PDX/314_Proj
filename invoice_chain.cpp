@@ -121,6 +121,22 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
     }
     else {
 //first run it for inv_num
+		curr = inv_num_head;
+        while (curr && toAdd->getInvNum() >= curr->invoice->getInvNum()) {
+            if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
+                cout << "\n\tCannot add new invoice, id number already exists." << endl;
+                return false;
+            }
+            prev = curr;
+            curr = curr->inv_num_next;
+        }
+		
+		if(prev) { prev->inv_num_next = newInvoice; }
+		else { inv_num_head = newInvoice; }
+
+		if(curr) { newInvoice->inv_num_next = curr; }
+
+		/*
         while (toAdd->getInvNum() >= curr->invoice->getInvNum() && curr->inv_num_next) {
             if (toAdd->getInvNum() == curr->invoice->getInvNum()) {
                 cout << "\n\tCannot add new invoice, id number already exists." << endl;
@@ -130,7 +146,7 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             prev = curr;
             curr = curr->inv_num_next;
         }
-        if (!curr->inv_num_next) {
+        if (!curr->inv_num_next) { //at end of list
             if (curr == inv_num_head) {
                 inv_num_head = newInvoice;
                 newInvoice->inv_num_next = curr;
@@ -142,9 +158,21 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->inv_num_next = newInvoice;
             newInvoice->inv_num_next = curr;
         }
+		*/
 //second run through to place in providers chain
         curr = pro_head;
         prev = nullptr;
+
+        while (curr && toAdd->getProNum() > curr->invoice->getProNum()) {
+            prev = curr;
+            curr = curr->pro_next;
+        }
+		
+		if(prev) { prev->pro_next = newInvoice; }
+		else { pro_head = newInvoice; }
+
+		if(curr) { newInvoice->pro_next = curr; }
+		/*
         while (toAdd->getProNum() > curr->invoice->getProNum() && curr->pro_next) {
             prev = curr;
             curr = curr->pro_next;
@@ -161,9 +189,21 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->pro_next = newInvoice;
             newInvoice->pro_next = curr;
         }
+		*/
 //lastly the process for members chain
         curr = mem_head;
         prev = nullptr;
+
+        while (curr && toAdd->getMemNum() > curr->invoice->getMemNum()) {
+            prev = curr;
+            curr = curr->mem_next;
+        }
+		
+		if(prev) { prev->mem_next = newInvoice; }
+		else { mem_head = newInvoice; }
+
+		if(curr) { newInvoice->mem_next = curr; }
+		/*
         while (toAdd->getMemNum() > curr->invoice->getMemNum() && curr->mem_next) {
             prev = curr;
             curr = curr->mem_next;
@@ -180,6 +220,7 @@ bool Invoice_Chain::add_invoice(Session_Invoice *toAdd)
             if(prev) prev->mem_next = newInvoice;
             newInvoice->mem_next = curr;
         }
+		*/
     }
     return true;
 }
@@ -290,6 +331,8 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	string file_out = string(MEM_REPORTS_PATH);
 
@@ -339,6 +382,7 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		tm *time = curr_inv->invoice->getServDate();
 
 		output_file << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
+    
 					<< ((pro) ? pro->getName() : "Invalid provider") << " on ";
         if (time->tm_mon < 9) { output_file << '0'; }
         output_file << (time->tm_mon + 1) << "-";
@@ -375,6 +419,8 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	string file_out = string(PRO_REPORTS_PATH);
 
@@ -425,6 +471,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 		tm *sub_time = curr_inv->invoice->getSubTime();
 
 		output_file << "\t" << "Service #" << curr_inv->invoice->getSerNum() << " provided to "
+
 					<< ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
         if (ser_time->tm_mon < 9) { output_file << '0'; }
         output_file << (ser_time->tm_mon + 1) << "-";
@@ -463,6 +510,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
         cout << (sub_time->tm_sec) << "\n\tFee due: "
             << ((serv) ? ("$" + to_string(serv->getFee())) : "Invalid fee") << endl;
 
+
 		curr_inv = curr_inv->pro_next;
 	}
 
@@ -488,12 +536,14 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	tm *curr_time = new tm;
 	time_t now = time(0);
 	curr_time = localtime(&now);
+	curr_time->tm_year += 1900;
+	curr_time->tm_mon += 1;
 
 	//TODO: specify path into separate reports folder
 	std::string file_out = string(ACC_REPORTS_PATH) + "AccountsPayable"
-						  + std::to_string(curr_time->tm_mon + 1) + "-"
+						  + std::to_string(curr_time->tm_mon) + "-"
 						  + std::to_string(curr_time->tm_mday) + "-"
-						  + std::to_string(curr_time->tm_year + 1900) + ".txt";
+						  + std::to_string(curr_time->tm_year) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);

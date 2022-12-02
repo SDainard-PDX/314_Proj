@@ -258,13 +258,12 @@ bool Invoice_Chain::write_out(string file_out)
 
 bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, Service_Directory *servDS)
 {
-	//TODO: throw error?
 	if(!mem_head)
 		return false;
 
 	Person *mem = memDS->find_person(id);
 
-	if(!mem) { //throw error
+	if(!mem) { 
 		return false;
 	}
 
@@ -291,7 +290,7 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 
     ofstream output_file;
 	output_file.open(file_out);
-    if(!output_file.is_open()) return false; //throw error
+    if(!output_file.is_open()) return false;
 
 	output_file << "Member Name: " << mem->getName() << endl
 				<< "Member ID: #" << mem->getNumber() << endl
@@ -348,7 +347,6 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 
 bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS, Service_Directory *servDS)
 {
-	//TODO: throw error?
 	if(!pro_head)
 		return false;
 
@@ -475,7 +473,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 {
 	if(!pro_head)
-		return false; //TODO: throw error?
+		return false; 
 	
 	int total_pro = 0;
 	int total_consuls = 0;

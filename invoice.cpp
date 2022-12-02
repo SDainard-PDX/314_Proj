@@ -92,7 +92,7 @@ bool Session_Invoice::edit()
     display();
 
     cout << "Make changes here. Kept information must be re-entered." << endl;
-    create(this->getProNum());
+    while(!create(this->getProNum()));
 
     return true;
 }

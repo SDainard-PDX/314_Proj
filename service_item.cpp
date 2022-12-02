@@ -47,7 +47,7 @@ bool Service_Item::edit()
     display();
 
     cout << "Make changes here, kept information must be re-entered." << endl;
-    create();
+    while(!create());
 
     return true;
 }

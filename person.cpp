@@ -75,7 +75,7 @@ bool Person::edit()
     display();
 
     cout << "Make changes here, kept information must be re-entered." << endl;
-    create(type);
+    while(!create(type)); //create will return false if input is invalid
 
     return true;
 }

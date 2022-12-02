@@ -4,8 +4,6 @@
 void people_populate_test();  //Done
 void people_add_and_remove_person_test();  //Done
 void people_find_person_test();
-//void people_edit_item_test();
-//void people_display_all_test();
 void people_write_out_test();
 
 void people_add_and_remove_person_test()
@@ -22,12 +20,12 @@ void people_add_and_remove_person_test()
 	bool test_success = false;
 	Person * test_person_search;
 
-	Person test_person(test_number, test_name, test_address, test_city, 
-					   test_state, test_zip, test_status, test_type);
+	Person * test_person = new Person(test_number, test_name, test_address, test_city, 
+					   				  test_state, test_zip, test_status, test_type);
 
 	test_DR->populate("people_testing.csv", 'm');
 
-	test_success = test_DR->add_person(&test_person);
+	test_success = test_DR->add_person(test_person);
 	
 	test_person_search = test_DR->find_person(test_number);
 	
@@ -66,7 +64,7 @@ void people_populate_test(int expected_count)
 	float num_passed = 0;
 	int count = test_DR.populate("people_testing.csv", 'm');
 
-	std::cout << "Testing People.populate()...\n";
+	std::cout << "\nTesting People.populate()...\n";
 	std::cout << "  Count should be " << expected_count << ", it is ";
 	std::cout << count << ". ";
 	if(count == expected_count)
@@ -77,7 +75,7 @@ void people_populate_test(int expected_count)
 	else
 		std::cout << " Failure!\n";
 
-	std::cout << " Displaying the " << expected_count << " entries.\n";
+	std::cout << "  Displaying the " << expected_count << " entries.\n\n";
 	test_DR.display_all();
 }
 

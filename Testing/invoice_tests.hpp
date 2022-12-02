@@ -61,19 +61,19 @@ void getAll_test()
     Session_Invoice *test = new Session_Invoice();
 
     assert(test->getInvNum() == -1);
-    std::cout << "\tgetInvNum() test passed" << std::endl;
+    std::cout << "getInvNum() test passed" << std::endl;
 
     assert(test->getSerNum() == "-1");
-    std::cout << "\tgetSerNum() test passed" << std::endl;
+    std::cout << "getSerNum() test passed" << std::endl;
 
     assert(test->getProNum() == "-1");
-    std::cout << "\tgetProNum() test passed" << std::endl;
+    std::cout << "getProNum() test passed" << std::endl;
 
     assert(test->getMemNum() == "-1");
-    std::cout << "\tgetMemNum() test passed" << std::endl;
+    std::cout << "getMemNum() test passed" << std::endl;
 
     assert(test->getComments() == "none");
-    std::cout << "\tgetComments() test passed" << std::endl;
+    std::cout << "getComments() test passed" << std::endl;
 
     std::cout << "Passed all get__() tests" << std::endl;
     delete test;

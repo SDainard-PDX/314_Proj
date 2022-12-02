@@ -8,7 +8,7 @@ g++ -g -o invoice_tests invoice_tests.cpp ../invoice.cpp ../functional.cpp
 
 int main()
 {
-    std::cout << "\nInvoice Module Tests" << std::endl;
+    std::cout << "\n\tInvoice Module Tests" << std::endl;
     getAll_test();
     init_test();
     complex_init_test("012345","987654321", "123465789", "Good session");

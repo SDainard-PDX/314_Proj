@@ -4,17 +4,9 @@
 echo
 echo Chocan All Tests
 
-#Chocan all tests
-#./functional_tests
+./functional_tests
+./invoice_tests
+./invoice_chain_tests
 
-echo
-echo Chocan Smoke Test
-#smoke tests
-./functional_smoke_tests
-
-echo
-echo Chocan verification tests
-#verification tests
-./functional_verify_tests
 
 echo

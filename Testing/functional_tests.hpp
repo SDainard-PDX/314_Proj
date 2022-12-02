@@ -35,7 +35,7 @@ namespace functional_tests {
 //these are testing groups
 
     void smoke_tests() {
-        std::cout << "\tFunctional smoke test:" << std::endl;
+        std::cout << "\t\tFunctional smoke test:" << std::endl;
         /* normally wouldn't include clear screen for obvious issues with losing anything
         * output before it; it's included here commented out as an example.
             clearscn_test(); */
@@ -48,7 +48,7 @@ namespace functional_tests {
     }
 
     void verification_tests() {
-        std::cout << "\tFunctional verification tests:" << std::endl;
+        std::cout << "\t\tFunctional verification tests:" << std::endl;
         allLet_test("thishas1numberinit", false);
         allNum_test("123a456", false);
         rightsize_test("this string is 27 characters", 29, 100, false);
@@ -59,7 +59,7 @@ namespace functional_tests {
 //this is a block test AKA a small system test as you can see it contains both the
 //smoke test for functional and the verification test
     void all_tests() {
-        std::cout << "\nFunctional Unit Tests" << std::endl;
+        std::cout << "\n\tFunctional Module Tests" << std::endl;
         smoke_tests();
         verification_tests();
         std::cout << std::endl;

@@ -335,7 +335,7 @@ int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
             case 1:
                 cout << "\nEnter the member ID number: ";
                 getline(cin, entry_number);
-                if (rightSize(entry_number, 9, 9)) {
+                if (rightSize(entry_number, 9, 9) && entry_number.find_first_not_of("0123456789") == string::npos) {
                     if (VerifyPerson(memDS, entry_number, reply)) {
                         cout << "\tMember status: " + reply;
                     }

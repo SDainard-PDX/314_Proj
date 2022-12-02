@@ -50,6 +50,7 @@ int main()
                     }//goto menu 2
                     else { cout << "Invalid login. Returning to main menu." << endl;}
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
                 break;
             case 2: //providers terminal
                 cout << "\nEnter your provider ID number: ";
@@ -60,6 +61,7 @@ int main()
                     }//goto menu 3
                     else cout << "Invalid login. Returning to main menu." << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
                 break;
             case 3:
                 cout << endl;
@@ -117,7 +119,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 		cout << "10 - Generate Report of Accounts Payable and EFT File"  << endl;
 
         cout << endl;
-        cout << " 11 - Return to main menu"         << endl;
+        cout << "11 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
@@ -178,6 +180,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     }
                     else cout << "\t\tUnable to Remove selection" << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
                 break;
 
             case 3:
@@ -208,6 +211,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     }
                     else cout << "\t\tUnable to Edit selection" << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
                 break;
 
             case 4:
@@ -246,8 +250,9 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     if(servDS->remove_item(entry_number)) {
                         cout << "\nRemoved Service " << entry_number << " from Directory." << endl;
                     }
+					else cout << "\n\t\tUnable to Remove selection" << endl;
                 }
-                else cout << "\n\t\tUnable to Remove selection" << endl;
+				else { cout << "Invalid code format. Returning to main menu." << endl; }
                 break;
             case 7:
                 cout << "\nEnter the Service number of the Service to edit: ";
@@ -256,8 +261,9 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     if(servDS->edit_item(entry_number)) {
                         cout << "\nEdited Service " << entry_number << " from Directory." << endl;
                     }
+					else cout << "\n\t\tUnable to edit selection. No changes saved." << endl;
                 }
-                else cout << "\n\t\tUnable to edit selection. No changes saved." << endl;
+				else { cout << "Invalid code format. Returning to main menu." << endl; }
                 break;
 
 			case 8:			//member summary report
@@ -269,6 +275,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     }
                     else cout << "That member is not within the system." << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
 				break;
 			case 9:			//provider summary report
                 cout << "\nEnter the ID number of the provider to generate a report for: ";
@@ -279,6 +286,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
                     }
                     else cout << "That provider is not within the system." << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
 				break;
 			case 10: 		//accounts payable
 				invoiceDS->acts_payable(proDS, servDS);	
@@ -292,7 +300,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         }
 
         Wait4Enter();
-    } while (menu_choice != 0 && menu_choice != 8);
+    } while (menu_choice != 0 && menu_choice != 11);
     Divider();
     return menu_choice;
 }
@@ -327,12 +335,13 @@ int Menu3(string Pro_Number, People *manDS, People *proDS, People *memDS,
             case 1:
                 cout << "\nEnter the member ID number: ";
                 getline(cin, entry_number);
-                if (rightSize(entry_number, 9, 9)) {
+                if (rightSize(entry_number, 9, 9) && entry_number.find_first_not_of("0123456789") == string::npos) {
                     if (VerifyPerson(memDS, entry_number, reply)) {
                         cout << "\tMember status: " + reply;
                     }
                     else cout << "Member status: Invalid" << endl;
                 }
+				else { cout << "Invalid ID format. Returning to main menu." << endl; }
                 break;
             case 2:
                 addition = new Session_Invoice;

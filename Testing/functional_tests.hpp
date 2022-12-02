@@ -118,6 +118,10 @@ namespace functional_tests {
     void rightsize_test(std::string x, int min, int max, bool expected) //covers ln 106-110
     {
         assert(rightSize(x, min, max) == expected);
+<<<<<<< HEAD
         std::cout << "PASSED: rightSize() expecting " << expected << std::endl;
+=======
+        cout << "Hello there!         PASSED: rightSize() expecting " << expected << endl;
+>>>>>>> 367307c (changes to perosn_test)
     }
 }

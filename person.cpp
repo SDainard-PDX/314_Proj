@@ -23,6 +23,7 @@ bool Person::create(char type_code){
         cout << "Please enter the id number of the person: ";
         getline(cin,number);
         if(!rightSize(number, 9, 9)) throw 'I';
+		if(!(number.find_first_not_of("0123456789") == string::npos)) throw 'I';
 
         cout << "Please enter the name of the person(max 25 char): ";
         getline(cin,name);
@@ -74,7 +75,7 @@ bool Person::edit()
     display();
 
     cout << "Make changes here, kept information must be re-entered." << endl;
-    create(type);
+    while(!create(type)); //create will return false if input is invalid
 
     return true;
 }

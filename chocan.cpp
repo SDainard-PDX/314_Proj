@@ -119,7 +119,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
 		cout << "10 - Generate Report of Accounts Payable and EFT File"  << endl;
 
         cout << endl;
-        cout << " 11 - Return to main menu"         << endl;
+        cout << "11 - Return to main menu"         << endl;
         cout << " 0 - Quit and exit"                << endl;
         cout << endl;
         cout << "\tChoice: ";
@@ -300,7 +300,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
         }
 
         Wait4Enter();
-    } while (menu_choice != 0 && menu_choice != 8);
+    } while (menu_choice != 0 && menu_choice != 11);
     Divider();
     return menu_choice;
 }

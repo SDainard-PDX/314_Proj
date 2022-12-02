@@ -46,7 +46,7 @@ bool Session_Invoice::create(string pro){
 
         cout << "Please enter any comments about the session (100 char max): ";
         getline(cin,comm);
-        if(!rightSize(serv, 0, 100)) throw 'C';
+        if(!rightSize(comm, 0, 100)) throw 'C';
 
         serv_date = new tm;
         sub_time = new tm;

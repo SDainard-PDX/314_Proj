@@ -246,7 +246,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
             case 6:
                 cout << "\nEnter the Service number of the Service to remove: ";
                 getline(cin, entry_number);
-                if (rightSize(entry_number, 9, 9)) {
+                if (rightSize(entry_number, 6, 6)) {
                     if(servDS->remove_item(entry_number)) {
                         cout << "\nRemoved Service " << entry_number << " from Directory." << endl;
                     }
@@ -257,7 +257,7 @@ int Menu2(People *manDS, People *proDS, People *memDS, Service_Directory *servDS
             case 7:
                 cout << "\nEnter the Service number of the Service to edit: ";
                 getline(cin, entry_number);
-                if (rightSize(entry_number, 9, 9)) {
+                if (rightSize(entry_number, 6, 6)) {
                     if(servDS->edit_item(entry_number)) {
                         cout << "\nEdited Service " << entry_number << " from Directory." << endl;
                     }

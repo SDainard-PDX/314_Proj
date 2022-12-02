@@ -283,9 +283,11 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 		file_out += token;
 	}
 
-	file_out += (to_string(curr_time->tm_mon) + "-"
-			   + to_string(curr_time->tm_mday) + "-"
-			   + to_string(curr_time->tm_year) + ".txt");
+	file_out += (curr_time->tm_mon < 10 ? "0" : "")
+	          + (to_string(curr_time->tm_mon)) + "-"
+	          + (curr_time->tm_mday < 10 ? "0" : "")
+			  + (to_string(curr_time->tm_mday)) + "-"
+			  + (to_string(curr_time->tm_year)) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -331,9 +333,9 @@ bool Invoice_Chain::member_report(std::string id, People *memDS, People *proDS, 
 
 		cout << "\t" << ((serv) ? serv->getName() : "Invalid service") << " with "
 			 << ((pro) ? pro->getName() : "Invalid provider") << " on ";
-        if (time->tm_mon < 10) { output_file << '0'; }
+        if (time->tm_mon < 10) { cout << '0'; }
         cout << (time->tm_mon) << "-";
-        if (time->tm_mday < 10) { output_file << '0'; }
+        if (time->tm_mday < 10) { cout << '0'; }
         cout << (time->tm_mday) << "-" << (time->tm_year) << "\n" << endl;
 
 		curr_inv = curr_inv->mem_next;
@@ -371,9 +373,11 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 		file_out += token;
 	}
 
-	file_out += (to_string(curr_time->tm_mon) + "-"
-					  + to_string(curr_time->tm_mday) + "-"
-					  + to_string(curr_time->tm_year) + ".txt");
+	file_out += (curr_time->tm_mon < 10 ? "0" : "")
+	          + (to_string(curr_time->tm_mon)) + "-"
+	          + (curr_time->tm_mday < 10 ? "0" : "")
+			  + (to_string(curr_time->tm_mday)) + "-"
+			  + (to_string(curr_time->tm_year)) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -428,6 +432,7 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 					if (sub_time->tm_min < 10) { output_file << '0'; }
 		output_file << (sub_time->tm_min) << ":";
 					if (sub_time->tm_sec < 10) { output_file << '0'; }
+		output_file << (sub_time->tm_sec);
 		output_file << "\n\tFee due: ";
 					if (serv) {
 						output_file << "$" << std::fixed
@@ -437,20 +442,21 @@ bool Invoice_Chain::provider_report(std::string id, People *proDS, People *memDS
 
 		cout << "\t" << "Service #" << curr_inv->invoice->getSerNum() <<" provided to "
 			 << ((mem) ? mem->getName() : "Invalid member") << "\n\tProvided on ";
-			 if (ser_time->tm_mon < 10) { output_file << '0'; }
+			 if (ser_time->tm_mon < 10) { cout << '0'; }
 	    cout << (ser_time->tm_mon) << "-";
-			 if (ser_time->tm_mday < 10) { output_file << '0'; }
+			 if (ser_time->tm_mday < 10) { cout << '0'; }
 		cout << (ser_time->tm_mday) << "-"
 			 << (ser_time->tm_year) << "\tRecorded on ";
-			 if (sub_time->tm_mon < 10) { output_file << '0'; }
+			 if (sub_time->tm_mon < 10) { cout << '0'; }
 		cout << (sub_time->tm_mon) << "-";
-			 if (sub_time->tm_mday < 10) { output_file << '0'; }
+			 if (sub_time->tm_mday < 10) { cout << '0'; }
 		cout << (sub_time->tm_mday) << "-" << (sub_time->tm_year);
-			 if (sub_time->tm_hour < 10) { output_file << '0'; }
+			 if (sub_time->tm_hour < 10) { cout << '0'; }
 		cout << " " << (sub_time->tm_hour) << ":";
-			 if (sub_time->tm_min < 10) { output_file << '0'; }
+			 if (sub_time->tm_min < 10) { cout << '0'; }
 		cout << (sub_time->tm_min) << ":";
-			 if (sub_time->tm_sec < 10) { output_file << '0'; }
+			 if (sub_time->tm_sec < 10) { cout << '0'; }
+		cout << (sub_time->tm_sec);
 		cout << "\n\tFee due: ";
 					if (serv) {
 						cout << "$" << std::fixed
@@ -487,14 +493,18 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 	curr_time->tm_mon += 1;
 
 	std::string file_out = string(ACC_REPORTS_PATH) + "AccountsPayable"
-						  + std::to_string(curr_time->tm_mon) + "-"
-						  + std::to_string(curr_time->tm_mday) + "-"
-						  + std::to_string(curr_time->tm_year) + ".txt";
+						 + (curr_time->tm_mon < 10 ? "0" : "")
+					  	 + (to_string(curr_time->tm_mon)) + "-"
+						 + (curr_time->tm_mday < 10 ? "0" : "")
+						 + (to_string(curr_time->tm_mday)) + "-"
+						 + (to_string(curr_time->tm_year)) + ".txt";
 	
 	std::string eft_file_out = string(EFT_PATH) + "EFT"
-						  + std::to_string(curr_time->tm_mon) + "-"
-						  + std::to_string(curr_time->tm_mday) + "-"
-						  + std::to_string(curr_time->tm_year) + ".txt";
+						  + (curr_time->tm_mon < 10 ? "0" : "")
+						  + (to_string(curr_time->tm_mon)) + "-"
+						  + (curr_time->tm_mday < 10 ? "0" : "")
+						  + (to_string(curr_time->tm_mday)) + "-"
+						  + (to_string(curr_time->tm_year)) + ".txt";
 
     ofstream output_file;
 	output_file.open(file_out);
@@ -552,46 +562,6 @@ bool Invoice_Chain::acts_payable(People *proDS, Service_Directory *servDS)
 		if(curr_inv) { pro_id = curr_inv->invoice->getProNum(); }
 		++total_pro;
 	}
-		/*{
-		if(!curr_inv->pro_next || pro_id != curr_inv->invoice->getProNum()) { //new provider
-			Person *pro = proDS->find_person(pro_id);
-
-			if(!pro) //invalid provider in session invoices
-				return false; //TODO: throw error
-
-			std::string pro_name = pro->getName();
-
-			//write out old provider's info
-			output_file << "\t" << pro_name << " #" << pro_id << endl
-						<< "\tTotal consultations: " << pro_consuls << endl
-						<< "\tFee due: $" << pro_fee << endl;
-
-			cout << "\t" << pro_name << " #" << pro_id << endl
-				 << "\tTotal consultations: " << pro_consuls << endl
-				 << "\tFee due: $" << pro_fee << endl;
-
-			output_eft_file << pro_name << "," << pro_id << "," << pro_fee << endl;	
-
-			//now prime for new provider
-			pro_fee = pro_consuls = 0;
-			pro_id = curr_inv->invoice->getProNum();
-			++total_pro;
-		}
-		Service_Item *serv = servDS->find_item(curr_inv->invoice->getSerNum());
-
-		if(!serv) //invalid service in session invoices
-		{
-			curr_inv = curr_inv->pro_next;
-			continue; //throw error too
-		}
-
-		double fee = serv->getFee();
-		total_fee += fee;
-		pro_fee += fee;
-		++total_consuls;
-		
-		curr_inv = curr_inv->pro_next;
-	}*/
 	
 	output_file << "Total Providers To Be Paid: " << total_pro << endl
 	            << "Total Consultations: " << total_consuls << endl

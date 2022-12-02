@@ -18,6 +18,7 @@ bool Service_Item::create(){
         cout << "Please enter the id number of the Service Item: ";
         getline(cin,number);
         if(!rightSize(number, 6, 6)) throw 'I';
+		if(!(number.find_first_not_of("0123456789") == string::npos)) throw 'I';
 
         cout << "Please enter the name of the Service Item(max 25 char): ";
         getline(cin,name);

@@ -14,9 +14,6 @@
 #define ACC_REPORTS_PATH "reports/accounts/"
 #define EFT_PATH         "reports/eft/"
 
-/*
-*/
-
 class Invoice_ChainNode
 {
     Invoice_ChainNode();

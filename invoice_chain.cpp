@@ -21,7 +21,7 @@ Invoice_ChainNode::~Invoice_ChainNode()
     mem_prev = nullptr;
 }
 
-Invoice_Chain::Invoice_Chain(): mem_head(nullptr), pro_head(nullptr), inv_num_head(nullptr) {}
+Invoice_Chain::Invoice_Chain(): invoice_count(0), mem_head(nullptr), pro_head(nullptr), inv_num_head(nullptr) {}
 
 Invoice_Chain::~Invoice_Chain()
 {

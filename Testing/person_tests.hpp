@@ -305,7 +305,7 @@ void person_number_compare_not_equals_test()
 	}
 }
 
-//Not sure how to test display()
+//Not sure how to test display() probably doesn't count as a test
 void person_display_test()
 {
 	std::string test_number = "123456789";
